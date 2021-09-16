@@ -1,12 +1,9 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   home.packages = [];
 
-  users = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" ];
+  programs.home-manager = {
+    enable = true;
   };
-
-  programs.fish.enable = true;
 }
