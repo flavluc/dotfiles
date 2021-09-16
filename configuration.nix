@@ -12,12 +12,28 @@
 
   # Use the systemd-boot EFI boot loader.
   # boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.efi = {
+    canTouchEfiVariables = true;
+    efiSysMountPoint = "/boot";
+  };
+
+  boot.supportedFilesystems = [ "ntfs" ];
+
   boot.loader.grub = {
     enable = true;
     devices = [ "nodev" ];
     efiSupport = true;
     useOSProber = true;
+    extraEntries = ''
+        menuentry "Windows" {
+          insmod part_gpt
+          insmod fat
+          insmod search_fs_uuid
+          insmod chain
+          search --fs-uuid --set=root 1980-01-01-00-00-00-00
+          chainloader /EFI/Microsoft/Boot/bootmgfw.efi
+        }
+      '';
   };
 
   networking.hostName = "nixos"; # Define your hostname.
@@ -81,6 +97,19 @@
     isNormalUser = true;
     extraGroups = [ "wheel" "networkmanager" ]; # Enable ‘sudo’ for the user.
   };
+  
+  # Define the fish shell as the default system shell
+  programs.fish.enable = true;
+
+  users.extraUsers.fuyu = {
+    shell = pkgs.fish;
+  };
+
+  # Enable flakes integration
+  nix.package = pkgs.nixUnstable;
+  nix.extraOptions = ''
+    experimental-features = nix-command flakes
+  '';
 
   # List of environment variables
   environment.variables.QT_QPA_PLATFORMTHEME = "qt5ct";
@@ -89,11 +118,13 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     # cli and terminal
+    ripgrep
     wget
     curl
     zip
     unzip
     unrar
+    p7zip
     ripgrep
     git
     alacritty
@@ -105,27 +136,26 @@
     xorg.xrandr
     # text editors
     vim
-    emacs
-    vscode
+    ((emacsPackagesNgGen emacs).emacsWithPackages (epkgs: [
+      epkgs.vterm
+    ]))
     # gui programs
     pavucontrol
-    qutebrowser
     firefox
-    pcmanfm
+    google-chrome
+    dolphin 
     arandr
     tdesktop
     discord
-    discord-canary
     spotify
-    zoom-us
-    slack
     anki
     zathura
     qbittorrent
     vlc
     calibre
-    winusb
+    mcomix3
     gparted
+    woeusb
     # anki-bin
     flameshot
     # window managers
@@ -141,13 +171,24 @@
     # rice
     pywal
     # dev
+    gcc
+    cmake
+    gnumake
+    libtool
+    libvterm
+    clang
     python3
     ghc
     stack
     nodejs
     yarn
+    elixir
+    rustc
+    rustup
+    cargo
+    zola
     # themes
-    arc-theme
+    # arc-theme
     gtk-engine-murrine
     gtk_engines
     breeze-qt5
@@ -156,7 +197,7 @@
     qt5ct
   ];
 
-  programs.steam.enable = true;
+  #programs.steam.enable = true;
 
   ###################
   ## Font Settings ##
