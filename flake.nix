@@ -17,7 +17,7 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users.fuyu = import ./home.nix;
+            home-manager.users.fuyu = import ./home;
           }
         ];
       };

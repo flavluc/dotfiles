@@ -6,10 +6,8 @@
   home.username = "fuyu";
   home.homeDirectory = "/home/fuyu";
 
-  nixpkgs.config.allowUnfree = true;
-
   imports = [
-      ./dev
+      ./dev.nix
   ];
 
   home.packages = with pkgs; [
@@ -28,11 +26,6 @@
     xdotool
     xorg.xkill
     xorg.xrandr
-    # text editors
-    vim
-    ((emacsPackagesNgGen emacs).emacsWithPackages (epkgs: [
-      epkgs.vterm
-    ]))
     # gui programs
     pavucontrol
     firefox

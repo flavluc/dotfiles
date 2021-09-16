@@ -1,7 +1,40 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 
 {
   manual.manpages.enable = true;
+
+  home = {
+    sessionPath = [ "${config.xdg.configHome}/emacs/bin" ];
+    sessionVariables = {
+      DOOMDIR = "${config.xdg.configHome}/doom-config";
+      DOOMLOCALDIR = "${config.xdg.configHome}/doom-local";
+    };
+  };
+
+  xdg = {
+    enable = true;
+    configFile = {
+      "doom-config/config.el".text = "…";
+      "doom-config/init.el".text = "…";
+      "doom-config/packages.el".text = "…";
+      "emacs" = {
+        source = builtins.fetchGit {
+          url = "https://github.com/hlissner/doom-emacs";
+          ref = "develop";
+          rev = "2c5cc752ff372745ae805312d3918e72ed620591";
+        };
+        onChange = "${pkgs.writeShellScript "doom-change" ''
+          export DOOMDIR="${config.home.sessionVariables.DOOMDIR}"
+          export DOOMLOCALDIR="${config.home.sessionVariables.DOOMLOCALDIR}"
+          if [ ! -d "$DOOMLOCALDIR" ]; then
+            ${config.xdg.configHome}/emacs/bin/doom -y install
+          else
+            ${config.xdg.configHome}/emacs/bin/doom -y sync -u
+          fi
+        ''}";
+      };
+    };
+  };
 
   home.packages = with pkgs; [
     gcc
@@ -19,6 +52,19 @@
     cargo
     zola
   ];
+
+  programs.emacs.enable = true;
+
+  services.emacs = {
+    enable = true;
+    client.enable = true;
+    socketActivation.enable = true;
+  };
+
+  programs.neovim = {
+    enable = true;
+    vimAlias = true;
+  };
 
   programs.git = {
     enable = true;
@@ -44,7 +90,7 @@
     enable = true;
     settings = {
       env.TERM = "xterm-256color";
-      background_opacity = 1;
+      background_opacity = 0.3;
 
       window = {
         dynamic_title = true;
@@ -65,11 +111,10 @@
         fontname = "DejaVu Sans Mono";
       in
         {
-          #font = let fontname = "Recursive Mono Linear Static"; in { # TODO fix this font with nerd font
           normal = { family = fontname; style = "Semibold"; };
           bold = { family = fontname; style = "Bold"; };
           italic = { family = fontname; style = "Semibold Italic"; };
-          size = 14;
+          size = 12;
         };
       cursor.style = "Block";
 
