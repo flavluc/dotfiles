@@ -8,6 +8,7 @@
 
   imports = [
       ./dev.nix
+      ./rice.nix
   ];
 
   home.packages = with pkgs; [
@@ -44,18 +45,10 @@
     gparted
     woeusb
     flameshot
-    # window managers
-    xmobar
-    feh
-    picom
-    dmenu
-    # systray
     volumeicon
     trayer
     # fonts
     nerdfonts
-    # rice
-    pywal
     # themes
     gtk-engine-murrine
     gtk_engines
