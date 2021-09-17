@@ -1,86 +1,79 @@
 { config, pkgs, ... }:
 
+let
+  customFonts = pkgs.nerdfonts.override {
+    fonts = [
+      "JetBrainsMono"
+      "Iosevka"
+    ];
+  };
+
+  myfonts = pkgs.callPackage fonts/default.nix { inherit pkgs; };
+in
 {
   imports =
     [
       ./hardware-configuration.nix
+      ./machine
+      ./wm
     ];
 
-  boot.loader.efi = {
-    canTouchEfiVariables = true;
-    efiSysMountPoint = "/boot";
+  networking = {
+    networkmanager = {
+      enable   = true;
+      packages = [ pkgs.networkmanager_openvpn ];
+    };
+    useDHCP = false;
   };
-
-  boot.supportedFilesystems = [ "ntfs" ];
-
-  boot.loader.grub = {
-    enable = true;
-    devices = [ "nodev" ];
-    efiSupport = true;
-    useOSProber = true;
-    extraEntries = ''
-        menuentry "Windows" {
-          insmod part_gpt
-          insmod fat
-          insmod search_fs_uuid
-          insmod chain
-          search --fs-uuid --set=root 1980-01-01-00-00-00-00
-          chainloader /EFI/Microsoft/Boot/bootmgfw.efi
-        }
-      '';
-  };
-
-  networking.hostName = "insp-nix";
-  networking.networkmanager.enable = true;
 
   time.timeZone = "America/Sao_Paulo";
-
-  networking.useDHCP = false;
-  networking.interfaces.enp2s0.useDHCP = true;
-  networking.interfaces.wlp3s0.useDHCP = true;
-
   i18n.defaultLocale = "en_US.UTF-8";
-  console = {
-    font = "Lat2-Terminus16";
-    keyMap = "br-abnt2";
-  };
 
-  services.xserver = {
-    enable = true;
-    displayManager.lightdm.enable = true;
-    displayManager.defaultSession = "none+xmonad";
+  environment.systemPackages = with pkgs; [
+    git
+    vim
+    wget
+  ];
 
-    windowManager = {
-      xmonad.enable = true;
-      xmonad.enableContribAndExtras = true;
-      xmonad.extraPackages = hpkgs: [
-        hpkgs.xmonad
-        hpkgs.xmonad-contrib
-        hpkgs.xmonad-extras
-      ];
+  virtualisation = {
+    docker = {
+      enable = true;
+      autoPrune = {
+        enable = true;
+        dates = "weekly";
+      };
     };
 
-    layout = "br";
-    libinput.enable = true;
+    virtualbox.host = {
+      enable = true;
+      enableExtensionPack = true;
+    };
   };
 
-  sound.enable = true;
-  hardware.pulseaudio.enable = true;
+  users.extraGroups.vboxusers.members = [ "fuyu" ];
 
-  users.users.fuyu = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" ];
-    shell = pkgs.fish;
+  sound = {
+    enable = true;
+    mediaKeys.enable = true;
   };
 
-  environment.variables = {
-    QT_QPA_PLATFORMTHEME = "qt5ct";
+  hardware.pulseaudio = {
+    enable = true;
+    extraModules = [ pkgs.pulseaudio-modules-bt ];
+    package = pkgs.pulseaudioFull;
   };
 
-  environment.systemPackages = with pkgs; [ git ];
+  services = {
+    openssh = {
+      enable = true;
+      allowSFTP = true;
+    };
+    sshd.enable = true;
+    printing.enable = true;
+  };
 
   fonts.fonts = with pkgs; [
-    (nerdfonts.override { fonts = [ "SourceCodePro" "Ubuntu" "Mononoki" ]; })
+    customFonts
     carlito
     dejavu_fonts
     ipafont
@@ -90,30 +83,45 @@
     emacs-all-the-icons-fonts
   ];
 
-  fonts.fontconfig.defaultFonts = {
-    monospace = [
-      "DejaVu Sans Mono"
-      "IPAGothic"
-    ];
-    sansSerif = [
-      "DejaVu Sans"
-      "IPAPGothic"
-    ];
-    serif = [
-      "DejaVu Serif"
-      "IPAPMincho"
-    ];
+  programs.fish.enable = true;
+
+  users.users.fuyu = {
+    isNormalUser = true;
+    extraGroups = [ "docker" "wheel" "networkmanager" ];
+    shell = pkgs.fish;
+  };
+
+  nixpkgs.config.allowUnfree = true;
+
+  nix = {
+    autoOptimiseStore = true;
+
+    gc = {
+      automatic = true;
+      dates     = "weekly";
+      options   = "--delete-older-than 7d";
+    };
+
+    extraOptions = ''
+      keep-outputs     = true
+      keep-derivations = true
+    '';
+
+    trustedUsers = [ "root" "fuyu" ];
+  };
+
+  console = {
+    font = "Lat2-Terminus16";
+    keyMap = "br-abnt2";
   };
 
   i18n.inputMethod.enabled = "fcitx";
   i18n.inputMethod.fcitx.engines = with pkgs.fcitx-engines; [ mozc ];
 
-  nixpkgs.config.allowUnfree = true;
+  # @TODO: should i get rid of this?
+  environment.variables = {
+    QT_QPA_PLATFORMTHEME = "qt5ct";
+  };
 
-  nix.package = pkgs.nixUnstable;
-  nix.extraOptions = ''
-    experimental-features = nix-command flakes
-  '';
-
-  system.stateVersion = "21.05";
+  system.stateVersion = "21.03";
 }
