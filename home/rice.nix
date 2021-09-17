@@ -1,10 +1,8 @@
-{ pkgs ... }:
+{ pkgs, ... }:
 
 {
   home.packages = with pkgs; [
-    xmobar
     feh
-    picom
     dmenu
     pywal
   ];
@@ -17,7 +15,7 @@
       "class_g = 'slop'"
     ];
     extraOptions = ''
-      corner-radius = 10;
+      corner-radius = 0;
       blur-method = "dual_kawase";
       blur-strength = "10";
       xinerama-shadow-crop = true;
@@ -32,9 +30,8 @@
     fadeDelta = 5;
     vSync = true;
     opacityRule = [
-      "80:class_g   *?= 'Chromium-browser'"
-      "80:class_g   *?= 'Firefox'"
-      "80:class_g   *?= 'emacs'"
+      "70:class_g   = 'Firefox'"
+      "70:class_g   = 'emacs'"
     ];
     package = pkgs.picom.overrideAttrs(o: {
       src = pkgs.fetchFromGitHub {

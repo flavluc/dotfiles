@@ -9,6 +9,7 @@
   imports = [
       ./dev.nix
       ./rice.nix
+      ./xmobar.nix
   ];
 
   home.packages = with pkgs; [
