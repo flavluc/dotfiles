@@ -56,7 +56,7 @@ in
       key = "121D4302A64B2261";
       signByDefault = true;
     };
-    userEmail = "volpegabriel@gmail.com";
-    userName = "Gabriel Volpe";
+    userEmail = "flaviolc18@gmail.com";
+    userName = "Flávio Lúcio";
   };
 }

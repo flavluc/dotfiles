@@ -1,4 +1,4 @@
-{ fontSize, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   programs.alacritty = {
@@ -21,7 +21,7 @@
           family = "JetBrainsMono Nerd Font";
           style = "Medium";
         };
-        size = fontSize;
+        size = 12;
       };
       selection.save_to_clipboard = true;
       shell.program = "${pkgs.fish}/bin/fish";

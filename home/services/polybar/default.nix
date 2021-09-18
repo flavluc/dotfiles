@@ -1,4 +1,4 @@
-{ mainBar, openCalendar, config, pkgs, ... }:
+{ config, pkgs, ... }:
 
 let
   browser = "${pkgs.firefox-beta-bin}/bin/firefox";
@@ -11,6 +11,10 @@ let
       '';
     }
   );
+
+  mainBar = pkgs.callPackage ./bar.nix {};
+
+  openCalendar = "${pkgs.gnome3.gnome-calendar}/bin/gnome-calendar";
 
   openGithub = "${xdgUtils}/bin/xdg-open https\\://github.com/notifications";
 
@@ -46,14 +50,6 @@ let
     label = %{A1:${openCalendar}:}%time%%{A}
   '';
 
-  github = ''
-    [module/clickable-github]
-    inherit = module/github
-    token = ''${file:${config.xdg.configHome}/polybar/github-notifications-token}
-    user = fuyu
-    label = %{A1:${openGithub}:}  %notifications%%{A}
-  '';
-
   mpris = ''
     [module/mpris]
     type = custom/script
@@ -76,11 +72,9 @@ let
     tail = true
   '';
 
-  customMods = mainBar + bctl + cal + github + mpris + xmonad;
+  customMods = mainBar + bctl + cal + mpris + xmonad;
 in
 {
-  xdg.configFile."polybar/github-notifications-token".source = ../../secrets/github-notifications-token;
-
   services.polybar = {
     enable = true;
     package = mypolybar;

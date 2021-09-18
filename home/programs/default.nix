@@ -1,8 +1,12 @@
 [
+  ./alacritty
   ./autorandr
+  ./browsers/firefox.nix
   ./dconf
-  ./git
+  ./emacs
   ./fish
-  #./neovim
+  ./git
+  ./neovim
   ./rofi
+  ./xmonad
 ]

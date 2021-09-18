@@ -102,14 +102,13 @@ in
 
   nixpkgs.config = {
     allowUnfree = true;
-    packageOverrides = p: {
+    packageOverrides = pkgs: {
       nur = import (import pinned/nur.nix) { inherit pkgs; };
     };
   };
 
   nixpkgs.overlays = [
     (import ./overlays/beauty-line)
-    (import ./overlays/coc-nvim)
     (import ./overlays/discord)
     (import ./overlays/tex2nix)
   ];

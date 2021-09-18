@@ -4,24 +4,12 @@
 set +x
 
 prepare_home() {
-  echo "Creating config / cache directories..."
-
-  # Polybar logs
-  mkdir -p $HOME/.config/polybar/logs
-  touch $HOME/.config/polybar/logs/bottom.log
-  touch $HOME/.config/polybar/logs/top.log
-
-  # FZF cache
-  mkdir -p $HOME/.cache/fzf-hoogle
-  touch $HOME/.cache/fzf-hoogle/cache.json
+  echo "Creating config..."
 
   # Home manager files
+  rm -rf $HOME/.config/nixpkgs
   mkdir -p $HOME/.config/nixpkgs/
   cp -r home/* $HOME/.config/nixpkgs/
-
-  # Desktop pic
-  mkdir -p $HOME/Pictures/
-  cp home/nixos.png $HOME/Pictures/
 }
 
 install_hm() {
@@ -39,14 +27,12 @@ build_home() {
   # Switch to HM's latest build
   echo "Running Home Manager switch..."
   home-manager switch
-
-  # Set screenlock wallpaper
-  multilockscreen -u home/nixos.png
 }
 
 build_system() {
   sudo nix-channel --add https://nixos.org/channels/nixos-unstable nixos
   sudo cp system/configuration.nix /etc/nixos/
+  sudo cp system/hardware-configuration.nix /etc/nixos/
   sudo cp -r system/fonts/ /etc/nixos/
   sudo cp -r system/machine/ /etc/nixos/
   sudo cp -r system/wm/ /etc/nixos/

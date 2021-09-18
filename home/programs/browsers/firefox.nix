@@ -1,4 +1,4 @@
-{ pkgs, nur, hdmiOn, ... }:
+{ pkgs, ... }:
 
 let
   # disable the annoying floating icon with camera and mic when on a call
@@ -50,7 +50,7 @@ let
     "extensions.webcompat.perform_ua_overrides" = true;
 
     # DPI settings
-    "layout.css.devPixelsPerPx" = if hdmiOn then "-1.0" else "1.25";
+    "layout.css.devPixelsPerPx" = "-1.0"; # hdmiOff "1.25"
 
     "print.print_footerleft" = "";
     "print.print_footerright" = "";
@@ -66,7 +66,7 @@ in
   programs.firefox = {
     enable = true;
 
-    extensions = with nur.repos.rycee.firefox-addons; [
+    extensions = with pkgs.nur.repos.rycee.firefox-addons; [
       bitwarden
       darkreader
       # auto-accepts cookies, use only with privacy-badger & ublock-origin

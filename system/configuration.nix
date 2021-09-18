@@ -33,22 +33,8 @@ in
     git
     vim
     wget
+    firefox
   ];
-
-  virtualisation = {
-    docker = {
-      enable = true;
-      autoPrune = {
-        enable = true;
-        dates = "weekly";
-      };
-    };
-
-    virtualbox.host = {
-      enable = true;
-      enableExtensionPack = true;
-    };
-  };
 
   users.extraGroups.vboxusers.members = [ "fuyu" ];
 
