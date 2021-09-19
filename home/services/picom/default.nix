@@ -3,14 +3,8 @@
 {
   services.picom = {
     enable = true;
-    blur = true;
-    blurExclude = [
-        "class_g = 'slop'"
-    ];
     extraOptions = ''
         corner-radius = 10;
-        blur-method = "dual_kawase";
-        blur-strength = "3";
         xinerama-shadow-crop = true;
     '';
     experimentalBackends = true;

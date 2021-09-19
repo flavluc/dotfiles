@@ -27,9 +27,7 @@ let
     "browser.search.widget.inNavBar" = true;
 
     "browser.shell.checkDefaultBrowser" = false;
-    "browser.startup.homepage" = "https://nixos.org";
     "browser.tabs.loadInBackground" = true;
-    "browser.urlbar.placeholderName" = "DuckDuckGo";
 
     "distribution.searchplugins.defaultLocale" = "en-US";
 
@@ -50,7 +48,7 @@ let
     "extensions.webcompat.perform_ua_overrides" = true;
 
     # DPI settings
-    "layout.css.devPixelsPerPx" = "-1.0"; # hdmiOff "1.25"
+    "layout.css.devPixelsPerPx" = "1";
 
     "print.print_footerleft" = "";
     "print.print_footerright" = "";

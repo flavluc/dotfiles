@@ -24,7 +24,6 @@
   };
 
   services.xserver = {
-
     xrandrHeads = [
       { output = "HDMI-A-0";
         primary = true;
@@ -40,16 +39,5 @@
         '';
       }
     ];
-
-    resolutions = [
-      { x = 2048; y = 1152; }
-      { x = 1920; y = 1080; }
-      { x = 2560; y = 1440; }
-      { x = 3072; y = 1728; }
-      { x = 3840; y = 2160; }
-    ];
   };
-
-
-
 }

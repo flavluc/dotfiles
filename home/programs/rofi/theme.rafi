@@ -137,7 +137,7 @@ button {
     padding:          6px ;
     background-color: var(tlightblack);
     border-radius:    4px 0px 0px 4px ;
-    font:             "FontAwesome 22";
+    font:             "FontAwesome 18";
     border:           2px 0px 2px 2px ;
     horizontal-align: 0.50;
     border-color:     var(foreground);

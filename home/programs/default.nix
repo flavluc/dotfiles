@@ -1,6 +1,5 @@
 [
   ./alacritty
-  ./autorandr
   ./browsers/firefox.nix
   ./dconf
   ./emacs
