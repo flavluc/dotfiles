@@ -28,7 +28,12 @@ import           XMonad.Hooks.EwmhDesktops             ( ewmh
                                                        , ewmhDesktopsEventHook
                                                        , fullscreenEventHook
                                                        )
-import           XMonad.Hooks.FadeInactive             ( fadeInactiveLogHook )
+import           XMonad.Hooks.FadeWindows              ( fadeWindowsLogHook
+                                                       , fadeWindowsEventHook
+                                                       , transparency
+                                                       , opaque
+                                                       , isUnfocused
+                                                       )
 import           XMonad.Hooks.InsertPosition           ( Focus(Newer)
                                                        , Position(Below)
                                                        , insertPosition
@@ -49,6 +54,10 @@ import           XMonad.Hooks.ManageHelpers            ( (-?>)
                                                        )
 import           XMonad.Hooks.UrgencyHook              ( UrgencyHook(..)
                                                        , withUrgencyHook
+                                                       )
+import           XMonad.ManageHook                     ( composeAll
+                                                       , appName
+                                                       , (-->)
                                                        )
 import           XMonad.Layout.Gaps                    ( gaps )
 import           XMonad.Layout.MultiToggle             ( Toggle(..)
@@ -103,7 +112,7 @@ main' dbus = xmonad . docks . ewmh . dynProjects . keybindings . urgencyHook $ d
   { terminal           = myTerminal
   , focusFollowsMouse  = False
   , clickJustFocuses   = False
-  , borderWidth        = 1
+  , borderWidth        = 0
   , modMask            = myModMask
   , workspaces         = myWS
   , normalBorderColor  = "#dddddd" -- light gray (default)
@@ -112,7 +121,7 @@ main' dbus = xmonad . docks . ewmh . dynProjects . keybindings . urgencyHook $ d
   , layoutHook         = myLayout
   , manageHook         = myManageHook
   , handleEventHook    = myEventHook
-  , logHook            = myPolybarLogHook dbus
+  , logHook            = fadeWindowsLogHook myFadeHook <+> myPolybarLogHook dbus
   , startupHook        = myStartupHook
   }
  where
@@ -174,7 +183,7 @@ polybarHook dbus =
           , ppTitle           = wrapper purple . shorten 90
           }
 
-myPolybarLogHook dbus = myLogHook <+> dynamicLogWithPP (polybarHook dbus)
+myPolybarLogHook dbus = dynamicLogWithPP (polybarHook dbus)
 
 ------------------------------------------------------------------------
 -- Key bindings. Add, modify or remove key bindings here.
@@ -380,8 +389,10 @@ data App
   deriving Show
 
 audacious = ClassApp "Audacious"            "audacious"
+alacritty = ClassApp "Alacritty"            "alacritty"
 btm       = TitleApp "btm"                  "alacritty -t btm -e btm --color gruvbox --default_widget_type proc"
 calendar  = ClassApp "Gnome-calendar"       "gnome-calendar"
+emacs     = ClassApp  "emacs"               "emacs"
 eog       = NameApp  "eog"                  "eog"
 evince    = ClassApp "Evince"               "evince"
 gimp      = ClassApp "Gimp"                 "gimp"
@@ -389,7 +400,7 @@ nautilus  = ClassApp "Org.gnome.Nautilus"   "nautilus"
 office    = ClassApp "libreoffice-draw"     "libreoffice-draw"
 pavuctrl  = ClassApp "Pavucontrol"          "pavucontrol"
 scr       = ClassApp "SimpleScreenRecorder" "simplescreenrecorder"
-spotify   = ClassApp "Spotify"              "myspotify"
+spotify   = ClassApp "Spotify"              "spotify"
 vlc       = ClassApp "Vlc"                  "vlc"
 yad       = ClassApp "Yad"                  "yad --text-info --text 'XMonad'"
 
@@ -515,12 +526,11 @@ projectsTheme = amberXPConfig
 -- return (All True) if the default handler is to be run afterwards. To
 -- combine event hooks use mappend or mconcat from Data.Monoid.
 --
-myEventHook = docksEventHook <+> ewmhDesktopsEventHook <+> fullscreenEventHook
+myEventHook = docksEventHook <+> ewmhDesktopsEventHook <+> fullscreenEventHook <+> fadeWindowsEventHook
 
-------------------------------------------------------------------------
--- Status bars and logging
-
--- Perform an arbitrary action on each internal state change or X event.
--- See the 'XMonad.Hooks.DynamicLog' extension for examples.
---
-myLogHook = fadeInactiveLogHook 0.9
+myFadeHook = composeAll [ opaque
+                        , isUnfocused              --> transparency 0.2
+                        , appName =? "emacs"       --> transparency 0.2
+                        , appName =? "Alacritty"   --> transparency 0.2
+                        , appName =? "code"        --> transparency 0.2
+                        ]

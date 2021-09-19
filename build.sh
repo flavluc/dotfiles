@@ -12,11 +12,6 @@ prepare_home() {
   touch $HOME/.config/polybar/logs/top.log
 
   # Home manager files
-  rm -rf $HOME/.config/doom-config
-  mkdir -p $HOME/.config/doom-config
-  cp -r home/programs/emacs/doom-config $HOME/.config
-
-  # Home manager files
   rm -rf $HOME/.config/nixpkgs
   mkdir -p $HOME/.config/nixpkgs/
   cp -r home/* $HOME/.config/nixpkgs/
@@ -36,7 +31,7 @@ build_home() {
 
   # Switch to HM's latest build
   echo "Running Home Manager switch..."
-  home-manager switch
+  home-manager switch -b /dev/null
 }
 
 build_system() {
@@ -50,7 +45,7 @@ build_system() {
 }
 
 build_all() {
-  echo "No custom build option given. Building system and home."
+  echo "Building system and home."
   cmd="build_system && build_home"
   nix-shell --run "$cmd"
 }

@@ -3,11 +3,14 @@
 {
   home.sessionPath = [ "${config.xdg.configHome}/emacs/bin" ];
   home.sessionVariables = {
-      DOOMDIR = "./doom.d";
-      DOOMLOCALDIR = "${config.xdg.configHome}/doom-local";
-    };
+    DOOMDIR = "${config.xdg.configHome}/doom-config";
+    DOOMLOCALDIR = "${config.xdg.configHome}/doom-local";
+  };
 
   xdg.configFile = {
+    "doom-config/config.el".text = (builtins.readFile ./doom.d/config.el);
+    "doom-config/init.el".text = (builtins.readFile ./doom.d/init.el);
+    "doom-config/packages.el".text = (builtins.readFile ./doom.d/packages.el);
     "emacs" = {
       source = builtins.fetchGit "https://github.com/hlissner/doom-emacs";
       onChange = "${pkgs.writeShellScript "doom-change" ''
