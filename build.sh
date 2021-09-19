@@ -6,6 +6,16 @@ set +x
 prepare_home() {
   echo "Creating config..."
 
+  # Polybar logs
+  mkdir -p $HOME/.config/polybar/logs
+  touch $HOME/.config/polybar/logs/bottom.log
+  touch $HOME/.config/polybar/logs/top.log
+
+  # Home manager files
+  rm -rf $HOME/.config/doom-config
+  mkdir -p $HOME/.config/doom-config
+  cp -r home/programs/emacs/doom-config $HOME/.config
+
   # Home manager files
   rm -rf $HOME/.config/nixpkgs
   mkdir -p $HOME/.config/nixpkgs/

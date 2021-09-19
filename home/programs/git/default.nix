@@ -52,10 +52,6 @@ in
       "*.mill-version" # used by metals
       "*.jvmopts"      # should be local to every project
     ];
-    signing = {
-      key = "121D4302A64B2261";
-      signByDefault = true;
-    };
     userEmail = "flaviolc18@gmail.com";
     userName = "Flávio Lúcio";
   };

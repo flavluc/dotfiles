@@ -21,7 +21,6 @@ in
   networking = {
     networkmanager = {
       enable   = true;
-      packages = [ pkgs.networkmanager_openvpn ];
     };
     useDHCP = false;
   };
@@ -36,8 +35,6 @@ in
     firefox
   ];
 
-  users.extraGroups.vboxusers.members = [ "fuyu" ];
-
   sound = {
     enable = true;
     mediaKeys.enable = true;
@@ -47,15 +44,6 @@ in
     enable = true;
     extraModules = [ pkgs.pulseaudio-modules-bt ];
     package = pkgs.pulseaudioFull;
-  };
-
-  services = {
-    openssh = {
-      enable = true;
-      allowSFTP = true;
-    };
-    sshd.enable = true;
-    printing.enable = true;
   };
 
   fonts.fonts = with pkgs; [
@@ -73,7 +61,7 @@ in
 
   users.users.fuyu = {
     isNormalUser = true;
-    extraGroups = [ "docker" "wheel" "networkmanager" ];
+    extraGroups = [ "wheel" "networkmanager" ];
     shell = pkgs.fish;
   };
 
@@ -104,10 +92,5 @@ in
   i18n.inputMethod.enabled = "fcitx";
   i18n.inputMethod.fcitx.engines = with pkgs.fcitx-engines; [ mozc ];
 
-  # @TODO: should i get rid of this?
-  environment.variables = {
-    QT_QPA_PLATFORMTHEME = "qt5ct";
-  };
-
-  system.stateVersion = "21.03";
+  system.stateVersion = "21.05";
 }

@@ -56,7 +56,7 @@
 (setq
  confirm-kill-emacs nil
  elcord-use-major-mode-as-main-icon t
- projectile-project-search-path '("~/Desktop/code/" "~/Desktop/")
+ projectile-project-search-path '("~")
  )
 
 (elcord-mode)
