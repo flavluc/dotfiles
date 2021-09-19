@@ -108,7 +108,6 @@ in
   };
 
   nixpkgs.overlays = [
-    (import ./overlays/beauty-line)
     (import ./overlays/discord)
     (import ./overlays/tex2nix)
   ];
