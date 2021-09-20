@@ -35,6 +35,7 @@ in
       ad  = "add";
       ps  = "push";
       pl  = "pull";
+      cl  = "clone";
     };
     extraConfig = gitConfig;
     userEmail = "flaviolc18@gmail.com";

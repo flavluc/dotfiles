@@ -16,18 +16,23 @@ let
 in
 {
   xresources.properties = {
-    "Xft.dpi" = 180;
+    "Xft.dpi" = 96;
     "Xft.autohint" = 0;
     "Xft.hintstyle" = "hintfull";
     "Xft.hinting" = 1;
     "Xft.antialias" = 1;
     "Xft.rgba" = "rgb";
-    "Xcursor*theme" = "Vanilla-DMZ-AA";
-    "Xcursor*size" = 24;
   };
+
 
   xsession = {
     enable = true;
+
+    pointerCursor = {
+      name = "Vanilla-DMZ";
+      package = pkgs.vanilla-dmz;
+      size = 32;
+    };
 
     initExtra = extra + polybarOpts;
 

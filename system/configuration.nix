@@ -5,10 +5,11 @@ let
     fonts = [
       "JetBrainsMono"
       "Iosevka"
+      "SourceCodePro"
+      "Ubuntu"
+      "Mononoki"
     ];
   };
-
-  myfonts = pkgs.callPackage fonts/default.nix { inherit pkgs; };
 in
 {
   imports =
