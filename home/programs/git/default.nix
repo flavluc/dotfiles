@@ -16,12 +16,6 @@ let
       prompt = false;
     };
     pull.rebase = false;
-    url = {
-      "https://github.com/".insteadOf = "gh:";
-      "ssh://git@github.com".pushInsteadOf = "gh:";
-      "https://gitlab.com/".insteadOf = "gl:";
-      "ssh://git@gitlab.com".pushInsteadOf = "gl:";
-    };
   };
 in
 {
@@ -38,20 +32,11 @@ in
       cm = "commit -m";
       ca = "commit -am";
       dc = "diff --cached";
+      ad  = "add";
+      ps  = "push";
+      pl  = "pull";
     };
     extraConfig = gitConfig;
-    ignores = [
-      "*.bloop"
-      "*.bsp"
-      "*.metals"
-      "*.metals.sbt"
-      "*metals.sbt"
-      "*.direnv"
-      "*.envrc"        # there is lorri, nix-direnv & simple direnv; let people decide
-      "*hie.yaml"      # ghcide files
-      "*.mill-version" # used by metals
-      "*.jvmopts"      # should be local to every project
-    ];
     userEmail = "flaviolc18@gmail.com";
     userName = "Flávio Lúcio";
   };

@@ -12,7 +12,7 @@
     green:            rgba ( 134, 175, 128, 100 % );
     background-color: rgba ( 0, 0, 0, 0 % );
     lightred:         rgba ( 204, 85, 51, 100 % );
-    font:             "JetBrainsMono Nerd Font 24";
+    font:             "JetBrainsMono Nerd Font 18";
     tlightblack:      rgba ( 85, 68, 68, 80 % );
     lightmagenta:     rgba ( 153, 102, 0, 100 % );
     dark:             rgba ( 28, 28, 28, 100 % );
@@ -51,16 +51,16 @@ message {
     background-color: var(tcyan);
     border-color:     var(foreground);
     font:             "JetBrainsMono Nerd Font 20";
-    border:           0px 2px 2px ;
+    border:           0px 1px 1px ;
     text-color:       var(black);
 }
 inputbar {
     padding:          11px ;
     background-color: var(tlightblack);
-    border:           2px ;
+    border:           1px ;
     font:             "JetBrainsMono Nerd Font 30";
     border-color:     var(foreground);
-    border-radius:    15px 15px 0px 0px ;
+    border-radius:    5px 5px 0px 0px ;
     text-color:       var(lightgreen);
 }
 entry {
@@ -82,16 +82,20 @@ listview {
     dynamic:          false;
     border-color:     var(foreground);
     lines:            10;
-    border-radius:    0px 0px 15px 15px ;
-    border:           0px 2px 2px ;
+    border-radius:    0px 0px 5px 5px ;
+    border:           0px 1px 1px ;
 }
 element {
-    padding:          3px ;
+    margin: 1px;
     background-color: rgba ( 0, 0, 0, 0 % );
     vertical-align:   0.50;
     font:             inherit;
-    border-radius:    4px ;
+    border-radius:    5px ;
     text-color:       var(foreground);
+}
+element-text {
+    text-color: var(lightwhite);
+    margin: 0px 0px 0px 5px;
 }
 element selected.normal {
     background-color: var(blue);
@@ -147,4 +151,7 @@ button selected.normal {
     border-color:     var(foreground);
     text-color:       var(dark);
     border:           2px 0px 2px 2px ;
+}
+element-icon {
+    size: 2ch ;
 }

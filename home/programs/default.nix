@@ -5,7 +5,6 @@
   ./emacs
   ./fish
   ./git
-  ./neovim
   ./rofi
   ./xmonad
 ]

@@ -162,7 +162,7 @@ in
       };
     };
 
-    programs.neovim = {
+    neovim = {
       enable = true;
       vimAlias = true;
     };
