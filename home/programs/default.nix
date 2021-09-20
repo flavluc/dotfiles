@@ -2,7 +2,6 @@
   ./alacritty
   ./browsers/firefox.nix
   ./browsers/chromium.nix
-  ./dconf
   ./emacs
   ./fish
   ./git

@@ -44,7 +44,6 @@ let
     slack                # messaging client
     spotify              # music source
     tdesktop             # telegram messaging client
-    terminator           # great terminal multiplexer
     tldr                 # summary of a man page
     tree                 # display files in a tree view
     vlc                  # media player
@@ -162,8 +161,6 @@ in
         sort_key = "PERCENT_CPU";
       };
     };
-
-    jq.enable = true;
 
     obs-studio = {
       enable = true;

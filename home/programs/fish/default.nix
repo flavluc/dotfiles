@@ -46,6 +46,7 @@ in
       ".." = "cd ..";
       ping = "prettyping";
       tree = "exa -T";
+      cd   = "z";
     };
     shellInit = fishConfig;
   };

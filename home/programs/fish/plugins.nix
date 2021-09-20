@@ -4,7 +4,7 @@ let
   bobthefish = {
     name = "theme-bobthefish";
     src  = pkgs.fetchFromGitHub {
-      owner  = "gvolpe";
+      owner  = "flavluc";
       repo   = "theme-bobthefish";
       rev    = "d3df6f516e351e12fbb455bcf310640695cb2662";
       sha256 = "1nvazfyz7vk37nska7yw94kknv8jbsqwzz3ybwbnhsnf98xlir0r";
