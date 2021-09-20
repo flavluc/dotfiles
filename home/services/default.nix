@@ -1,6 +1,5 @@
 [
   ./dunst
-  ./networkmanager
   ./picom
   ./polybar
 ]

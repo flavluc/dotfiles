@@ -1,12 +1,9 @@
 { config, pkgs, ... }:
 
-let
-  colors = import ../../themes/colors.nix;
-in
 {
   services.dunst = {
     enable = true;
-    settings = with colors.scheme.helios; {
+    settings = {
       global = {
         monitor = 0;
         geometry = "500x100-50+65";
@@ -14,7 +11,7 @@ in
         padding = 10;
         horizontal_padding = 10;
         frame_width = 0;
-        frame_color = "${base00}";
+        frame_color = "#1d2021";
         separator_color = "frame";
         font = "JetBrainsMono Nerd Font 8";
         line_height = 4;
@@ -33,19 +30,19 @@ in
         hide_duplicate_count = true;
       };
       urgency_low = {
-        background = "#${base05}";
-        forefround = "#${base00}";
+        background = "#d5d5d5";
+        forefround = "#1d2021";
         timeout = 2;
       };
       urgency_normal = {
-        background = "#${base05}";
-        forefround = "#${base00}";
+        background = "#d5d5d5";
+        forefround = "#1d2021";
         timeout = 2;
       };
       urgency_critical = {
-        background = "#${base0A}";
-        forefrond = "#${base0D}";
-        frame_color = "#${base08}";
+        background = "#f19d1a";
+        forefrond = "#1e8bac";
+        frame_color = "#d72638";
         timeout = 5;
       };
     };
