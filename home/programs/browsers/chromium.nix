@@ -1,9 +1,16 @@
-let
-  ext = import ./extensions.nix;
-in
 {
   programs.chromium = {
     enable     = true;
-    extensions = builtins.attrValues ext;
+    extensions = builtins.attrValues {
+      color-piker        = "anjjklgikjggiojapklkllfgehkbljpd";
+      dark-reader        = "eimadpbcbfnmbkopoojfekhnkhdbieeh";
+      github-dark-theme  = "odkdlljoangmamjilkamahebpkgpeacp";
+      google-meet-grid   = "kklailfgofogmmdlhgmjgenehkjoioip";
+      google-translate   = "aapbdbdomjkkjkaonfhkkikfgjllcleb";
+      lastpass           = "hdokiejnpimakedhajhdlcegeplioahd";
+      nyancat-youtube    = "bdjaekjkckpdknkfncfnaibkabdcgmkg";
+      picture-in-picture = "hkgfoiooedgoejojocmhlaklaeopbecg";
+      vimium             = "dbepggeogbaibhgnhhndojpepiihcmeb";
+    };
   };
 }
