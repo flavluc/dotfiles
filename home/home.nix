@@ -122,7 +122,7 @@ in
 
     sessionVariables = {
       DISPLAY = ":0";
-      EDITOR = "nvim";
+      EDITOR = "emacs";
     };
   };
 
@@ -160,6 +160,11 @@ in
         sort_direction = true;
         sort_key = "PERCENT_CPU";
       };
+    };
+
+    programs.neovim = {
+      enable = true;
+      vimAlias = true;
     };
 
     obs-studio = {
