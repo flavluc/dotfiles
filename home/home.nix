@@ -45,7 +45,6 @@ let
     spotify              # music source
     tdesktop             # telegram messaging client
     terminator           # great terminal multiplexer
-    tex2nix              # texlive expressions for documents
     tldr                 # summary of a man page
     tree                 # display files in a tree view
     vlc                  # media player
@@ -109,7 +108,6 @@ in
 
   nixpkgs.overlays = [
     (import ./overlays/discord)
-    (import ./overlays/tex2nix)
   ];
 
   imports = (import ./programs) ++ (import ./services) ++ [(import ./themes)];
@@ -157,8 +155,6 @@ in
       fileWidgetCommand = "fd --type file --follow"; # FZF_CTRL_T_COMMAND
     };
 
-    gpg.enable = true;
-
     htop = {
       enable = true;
       settings = {
@@ -185,6 +181,19 @@ in
 
   services = {
     flameshot.enable = true;
-  };
 
+    udiskie = {
+      enable = true;
+      tray = "always";
+    };
+
+    screen-locker = {
+      enable = true;
+      inactiveInterval = 30;
+      lockCmd = "${pkgs.multilockscreen}/bin/multilockscreen -l dim";
+      xautolockExtraOptions = [
+        "Xautolock.killer: systemctl suspend"
+      ];
+    };
+  };
 }
