@@ -111,7 +111,16 @@ in
 
   imports = (import ./programs) ++ (import ./services) ++ [(import ./themes)];
 
-  xdg.enable = true;
+  xdg = {
+    enable = true;
+    configFile."networkmanager-dmenu/config.ini".text = ''
+      [dmenu]
+      dmenu_command = rofi
+      rofi_highlight = True
+      [editor]
+      gui_if_available = True
+    '';
+  };
 
   home = {
     username      = "fuyu";
