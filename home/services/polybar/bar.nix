@@ -1,13 +1,14 @@
-{ font0 ? 16, font1 ? 18, font2 ? 40, font3 ? 28, font4 ? 7 }:
+{ font0 ? 10, font1 ? 12, font2 ? 34, font3 ? 22, font4 ? 3 }:
 
 let
   bar = ''
     [bar/main]
     monitor = ''${env:MONITOR:eDP}
     width = 100%
-    height = 48
-    radius = 6.0
+    height = 32
+    radius = 10
     fixed-center = true
+    offset-y = 5
 
     background = ''${color.bg}
     foreground = ''${color.fg}
@@ -15,7 +16,7 @@ let
     padding-left = 0
     padding-right = 0
 
-    module-margin-left = 1
+    module-margin-left = 2
     module-margin-right = 2
 
     tray-padding = 3
@@ -50,8 +51,8 @@ let
     inherit = bar/main
 
     tray-position = center
-    modules-left = right-end-top nixos xmonad left-end-bottom right-end-top left-end-top
-    modules-right = left-end-top keyboard clickable-github temperature clickable-date battery
+    modules-left = right-end-top nixos xmonad
+    modules-right = left-end-top keyboard temperature clickable-date battery
     enable-ipc = true
   '';
 
