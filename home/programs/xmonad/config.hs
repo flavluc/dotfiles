@@ -190,6 +190,7 @@ myPolybarLogHook dbus = dynamicLogWithPP (polybarHook dbus)
 --
 
 myTerminal   = "alacritty"
+myEditor     = "emacs"
 appLauncher  = "rofi -modi drun,ssh,window -show drun -show-icons"
 screenLocker = "multilockscreen -l dim"
 playerctl c  = "playerctl --player=spotify,%any " <> c
@@ -482,24 +483,24 @@ projects =
   , Project { projectName      = ossWs
             , projectDirectory = "~/"
             , projectStartHook = Just $ do replicateM_ 2 (spawn myTerminal)
-                                           spawn $ myTerminal <> " -e home-manager edit"
             }
   , Project { projectName      = devWs
-            , projectDirectory = "~/workspace"
-            , projectStartHook = Just . replicateM_ 2 $ spawn myTerminal
+            , projectDirectory = "~/"
+            , projectStartHook = Just $ spawn myEditor
             }
   , Project { projectName      = chtWs
             , projectDirectory = "~/"
-            , projectStartHook = Just $ do spawn "telegram-desktop"
-                                           spawn "signal-desktop --use-tray-icon"
+            , projectStartHook = Just $ do spawn "discord"
+                                           spawn "telegram-desktop"
             }
   , Project { projectName      = mscWs
             , projectDirectory = "~/"
-            , projectStartHook = Just $ spawn "firefox -P 'demo'" -- -no-remote"
+            , projectStartHook = Just $ do spawn "firefox --new-window youtube.com"
+                                           spawn "spotify"
             }
   , Project { projectName      = medWs
             , projectDirectory = "/etc/nixos/"
-            , projectStartHook = Just . spawn $ myTerminal <> " -e sudo su"
+            , projectStartHook = Nothing
             }
   , Project { projectName      = etcWs
             , projectDirectory = "~/"

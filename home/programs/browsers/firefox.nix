@@ -67,7 +67,6 @@ in
     extensions = with pkgs.nur.repos.rycee.firefox-addons; [
       bitwarden
       darkreader
-      # auto-accepts cookies, use only with privacy-badger & ublock-origin
       i-dont-care-about-cookies
       languagetool
       link-cleaner
