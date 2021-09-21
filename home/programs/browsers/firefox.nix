@@ -1,15 +1,28 @@
 { pkgs, ... }:
 
 let
-  # disable the annoying floating icon with camera and mic when on a call
-  disableWebRtcIndicator = ''
+  userChrome = ''
     #webrtcIndicator {
       display: none;
+    }
+    #main-window[tabsintitlebar="true"]:not([extradragspace="true"]) #TabsToolbar > .toolbar-items {
+      opacity: 0;
+      pointer-events: none;
+    }
+    #main-window:not([tabsintitlebar="true"]) #TabsToolbar {
+        visibility: collapse !important;
+    }
+    #sidebar-box[sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"] #sidebar-header {
+      display: none;
+    }
+    .tab {
+      margin-left: 1px;
+      margin-right: 1px;
     }
   '';
 
   # ~/.mozilla/firefox/PROFILE_NAME/prefs.js | user.js
-  sharedSettings = {
+  settings = {
     "app.normandy.first_run" = false;
     "app.shield.optoutstudies.enabled" = false;
 
@@ -72,7 +85,6 @@ in
       link-cleaner
       privacy-badger
       tab-session-manager
-      to-deepl
       tree-style-tab
       ublock-origin
       unpaywall
@@ -84,20 +96,8 @@ in
     profiles = {
       default = {
         id = 0;
-        settings = sharedSettings;
-        userChrome = disableWebRtcIndicator;
-      };
-
-      chatroulette = {
-        id = 1;
-        settings = sharedSettings;
-        userChrome = disableWebRtcIndicator;
-      };
-
-      demo = {
-        id = 2;
-        settings = sharedSettings;
-        userChrome = disableWebRtcIndicator;
+        settings = settings;
+        userChrome = userChrome;
       };
     };
   };
