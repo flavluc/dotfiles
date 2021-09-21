@@ -1,9 +1,8 @@
-{ font0 ? 10, font1 ? 12, font2 ? 34, font3 ? 22, font4 ? 3 }:
+{ font0 ? 12, font1 ? 12, font2 ? 34, font3 ? 22, font4 ? 3 }:
 
 let
   bar = ''
     [bar/main]
-    monitor = ''${env:MONITOR:eDP}
     width = 100%
     height = 32
     radius = 10
@@ -13,7 +12,7 @@ let
     background = ''${color.bg}
     foreground = ''${color.fg}
 
-    padding-left = 0
+    padding-left = 5
     padding-right = 0
 
     module-margin-left = 2
@@ -41,9 +40,6 @@ let
     font-3 = Iosevka Nerd Font:style=Medium:size=${toString font3};3
     ; Smaller font size for shorter spaces
     font-4 = Iosevka Nerd Font:style=Medium:size=${toString font4};3
-
-    ;font-5 = "Font Awesome 5 Free:style=Solid:pixelsize=18;0"
-    ;font-5 = "MaterialIcons:size=18;0"
   '';
 
   top = ''
@@ -51,7 +47,7 @@ let
     inherit = bar/main
 
     tray-position = center
-    modules-left = right-end-top nixos xmonad
+    modules-left = nixos xmonad
     modules-right = left-end-top keyboard temperature clickable-date battery
     enable-ipc = true
   '';

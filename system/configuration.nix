@@ -5,11 +5,10 @@ let
     fonts = [
       "JetBrainsMono"
       "Iosevka"
-      "SourceCodePro"
-      "Ubuntu"
-      "Mononoki"
     ];
   };
+
+  myfonts = pkgs.callPackage fonts/default.nix { inherit pkgs; };
 in
 {
   imports =
@@ -49,6 +48,7 @@ in
 
   fonts.fonts = with pkgs; [
     customFonts
+    myfonts.icomoon-feather
     carlito
     dejavu_fonts
     ipafont

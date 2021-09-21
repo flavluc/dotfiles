@@ -180,7 +180,7 @@ polybarHook dbus =
           , ppUrgent          = wrapper orange
           , ppHidden          = wrapper gray
           , ppHiddenNoWindows = wrapper red
-          , ppTitle           = wrapper purple . shorten 90
+          , ppTitle           = mempty
           }
 
 myPolybarLogHook dbus = dynamicLogWithPP (polybarHook dbus)
@@ -200,7 +200,7 @@ showKeybindings x = addName "Show Keybindings" . io $
 
 myKeys conf@XConfig {XMonad.modMask = modm} =
   keySet "Applications"
-    [ key "Slack"         (modm                , xK_F2      ) $ spawnOn comWs "slack"
+    [ key "Slack"         (modm                , xK_F2      ) $ spawnOn chtWs "slack"
     ] ^++^
   keySet "Audio"
     [ key "Mute"          (0, xF86XK_AudioMute              ) $ spawn "amixer -q set Master toggle"
@@ -353,10 +353,10 @@ myLayout =
      gapSpaced g = spacing g . myGaps g
 
      -- Per workspace layout
-     comLayout = onWorkspace comWs (full ||| tiled)
+     comLayout = onWorkspace chtWs (full ||| tiled)
      --devLayout = onWorkspace devWs (Mirror tiled ||| full)
      webLayout = onWorkspace webWs (tiled ||| full)
-     wrkLayout = onWorkspace wrkWs (tiled ||| full)
+     wrkLayout = onWorkspace mscWs (tiled ||| full)
 
      -- Fullscreen
      fullScreenToggle = mkToggle (single NBFULL)
@@ -389,10 +389,8 @@ data App
   deriving Show
 
 audacious = ClassApp "Audacious"            "audacious"
-alacritty = ClassApp "Alacritty"            "alacritty"
 btm       = TitleApp "btm"                  "alacritty -t btm -e btm --color gruvbox --default_widget_type proc"
 calendar  = ClassApp "Gnome-calendar"       "gnome-calendar"
-emacs     = ClassApp  "emacs"               "emacs"
 eog       = NameApp  "eog"                  "eog"
 evince    = ClassApp "Evince"               "evince"
 gimp      = ClassApp "Gimp"                 "gimp"
@@ -461,16 +459,16 @@ scratchpads = scratchpadApp <$> [ audacious, btm, nautilus, scr, spotify ]
 ------------------------------------------------------------------------
 -- Workspaces
 --
-webWs = "web"
-ossWs = "oss"
-devWs = "dev"
-comWs = "com"
-wrkWs = "wrk"
-sysWs = "sys"
-etcWs = "etc"
+webWs = "\xf269" -- firefox icon
+ossWs = "\xf120" -- terminal icon
+devWs = "\xf121" -- code icon
+chtWs = "\xf086" -- chat icon
+mscWs = "\xf1bc" -- spotify icon
+medWs = "\xf144" -- media icon
+etcWs = "\xf069" -- misc icon
 
 myWS :: [WorkspaceId]
-myWS = [webWs, ossWs, devWs, comWs, wrkWs, sysWs, etcWs]
+myWS = [webWs, ossWs, devWs, chtWs, mscWs, medWs, etcWs]
 
 ------------------------------------------------------------------------
 -- Dynamic Projects
@@ -490,16 +488,16 @@ projects =
             , projectDirectory = "~/workspace"
             , projectStartHook = Just . replicateM_ 2 $ spawn myTerminal
             }
-  , Project { projectName      = comWs
+  , Project { projectName      = chtWs
             , projectDirectory = "~/"
             , projectStartHook = Just $ do spawn "telegram-desktop"
                                            spawn "signal-desktop --use-tray-icon"
             }
-  , Project { projectName      = wrkWs
+  , Project { projectName      = mscWs
             , projectDirectory = "~/"
             , projectStartHook = Just $ spawn "firefox -P 'demo'" -- -no-remote"
             }
-  , Project { projectName      = sysWs
+  , Project { projectName      = medWs
             , projectDirectory = "/etc/nixos/"
             , projectStartHook = Just . spawn $ myTerminal <> " -e sudo su"
             }
