@@ -13,7 +13,7 @@
         frame_width = 0;
         frame_color = "#1d2021";
         separator_color = "frame";
-        font = "JetBrainsMono Nerd Font 8";
+        font = "JetBrainsMono Nerd Font 10";
         line_height = 4;
         idle_threshold = 120;
         markup = "full";
@@ -35,8 +35,8 @@
         timeout = 2;
       };
       urgency_normal = {
-        background = "#d5d5d5";
-        forefround = "#1d2021";
+        background = "#2e2e2e";
+        forefround = "#9da0a1";
         timeout = 2;
       };
       urgency_critical = {
