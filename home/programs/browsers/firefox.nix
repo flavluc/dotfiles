@@ -71,7 +71,9 @@ in
       languagetool
       link-cleaner
       privacy-badger
+      tab-session-manager
       to-deepl
+      tree-style-tab
       ublock-origin
       unpaywall
       vimium
