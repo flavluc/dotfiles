@@ -392,32 +392,24 @@ yad       = ClassApp "Yad"                  "yad --text-info --text 'XMonad'"
 
 myManageHook = manageApps <+> manageSpawn <+> manageScratchpads
  where
-  isBrowserDialog     = isDialog <&&> className =? "Brave-browser"
   isFileChooserDialog = isRole =? "GtkFileChooserDialog"
   isPopup             = isRole =? "pop-up"
   isSplash            = isInProperty "_NET_WM_WINDOW_TYPE" "_NET_WM_WINDOW_TYPE_SPLASH"
   isRole              = stringProperty "WM_WINDOW_ROLE"
   tileBelow           = insertPosition Below Newer
-  doCalendarFloat   = customFloating (W.RationalRect (11 / 15) (1 / 48) (1 / 4) (1 / 4))
-  manageScratchpads = namedScratchpadManageHook scratchpads
-  anyOf :: [Query Bool] -> Query Bool
+  manageScratchpads   = namedScratchpadManageHook scratchpads
   anyOf = foldl (<||>) (pure False)
-  match :: [App] -> Query Bool
   match = anyOf . fmap isInstance
   manageApps = composeOne
-    [ isInstance calendar                      -?> doCalendarFloat
-    , match [ gimp, office ]                   -?> doFloat
-    , match [ audacious
+    [ match [ audacious
             , eog
             , nautilus
             , pavuctrl
             , scr
             ]                                  -?> doCenterFloat
-    , match [ btm, evince, spotify, vlc, yad ] -?> doFullFloat
     , resource =? "desktop_window"             -?> doIgnore
     , resource =? "kdesktop"                   -?> doIgnore
-    , anyOf [ isBrowserDialog
-            , isFileChooserDialog
+    , anyOf [ isFileChooserDialog
             , isDialog
             , isPopup
             , isSplash
