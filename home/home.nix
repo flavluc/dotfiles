@@ -39,7 +39,6 @@ let
     pulsemixer           # pulseaudio mixer
     ripgrep              # fast grep
     rnix-lsp             # nix lsp server
-    signal-desktop       # signal messaging client
     simplescreenrecorder # self-explanatory
     slack                # messaging client
     spotify              # music source
