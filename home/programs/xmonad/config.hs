@@ -13,9 +13,7 @@ import           XMonad.Actions.CycleWS                ( Direction1D(..)
                                                        )
 import           XMonad.Actions.DynamicProjects        ( Project(..)
                                                        , dynamicProjects
-                                                       , switchProjectPrompt
                                                        )
-import           XMonad.Actions.DynamicWorkspaces      ( removeWorkspace )
 import           XMonad.Actions.FloatKeys              ( keysAbsResizeWindow
                                                        , keysResizeWindow
                                                        )
@@ -200,9 +198,6 @@ showKeybindings x = addName "Show Keybindings" . io $
   E.bracket (spawnPipe $ getAppCommand yad) hClose (\h -> hPutStr h (unlines $ showKm x))
 
 myKeys conf@XConfig {XMonad.modMask = modm} =
-  keySet "Applications"
-    [ key "Slack"         (modm                , xK_F2      ) $ spawnOn chtWs "slack"
-    ] ^++^
   keySet "Audio"
     [ key "Mute"          (0, xF86XK_AudioMute              ) $ spawn "amixer -q set Master toggle"
     , key "Lower volume"  (0, xF86XK_AudioLowerVolume       ) $ spawn "amixer -q set Master 5%-"
@@ -213,9 +208,8 @@ myKeys conf@XConfig {XMonad.modMask = modm} =
     , key "Next"          (0, xF86XK_AudioNext              ) $ spawn $ playerctl "next"
     ] ^++^
   keySet "Launchers"
-    [ key "Terminal"      (modm .|. shiftMask  , xK_Return  ) $ spawn (XMonad.terminal conf)
-    , key "Apps (Rofi)"   (modm                , xK_p       ) $ spawn appLauncher
-    , key "Lock screen"   (modm .|. controlMask, xK_l       ) $ spawn screenLocker
+    [ key "Terminal"      (modm               , xK_Return  ) $ spawn (XMonad.terminal conf)
+    , key "Apps (Rofi)"   (modm .|. shiftMask , xK_Return  ) $ spawn appLauncher
     ] ^++^
   keySet "Layouts"
     [ key "Next"          (modm              , xK_space     ) $ sendMessage NextLayout
@@ -225,31 +219,25 @@ myKeys conf@XConfig {XMonad.modMask = modm} =
   keySet "Polybar"
     [ key "Toggle"        (modm              , xK_equal     ) togglePolybar
     ] ^++^
-  keySet "Projects"
-    [ key "Switch prompt" (modm              , xK_o         ) $ switchProjectPrompt projectsTheme
-    ] ^++^
   keySet "Scratchpads"
-    [ key "Audacious"       (modm .|. controlMask,  xK_a    ) $ runScratchpadApp audacious
-    , key "bottom"          (modm .|. controlMask,  xK_y    ) $ runScratchpadApp btm
-    , key "Files"           (modm .|. controlMask,  xK_f    ) $ runScratchpadApp nautilus
-    , key "Screen recorder" (modm .|. controlMask,  xK_r    ) $ runScratchpadApp scr
-    , key "Spotify"         (modm .|. controlMask,  xK_s    ) $ runScratchpadApp spotify
+    [ key "bottom"          (modm .|. shiftMask,  xK_y    ) $ runScratchpadApp btm
+    , key "Files"           (modm .|. shiftMask,  xK_f    ) $ runScratchpadApp nautilus
     ] ^++^
   keySet "Screens" switchScreen ^++^
   keySet "System"
-    [ key "Toggle status bar gap" (modm              , xK_b ) toggleStruts
-    , key "Logout (quit XMonad)"  (modm .|. shiftMask, xK_q ) $ io exitSuccess
-    , key "Restart XMonad"        (modm              , xK_q ) $ spawn "xmonad --recompile; xmonad --restart"
-    , key "Capture entire screen" (modm          , xK_Print ) $ spawn "flameshot full -p ~/Pictures/flameshot/"
+    [ key "Toggle status bar gap" (modm                 , xK_b     ) toggleStruts
+    , key "Restart XMonad"        (modm                 , xK_q     ) $ spawn "xmonad --recompile; xmonad --restart"
+    , key "Logout (quit XMonad)"  (modm .|. shiftMask   , xK_q     ) $ io exitSuccess
+    , key "Lock screen"           (modm                 , xK_p     ) $ spawn screenLocker
+    , key "Suspend"               (modm .|. shiftMask   , xK_p     ) $ spawn "systemctl suspend"
+    , key "Shutdown"              (modm .|. controlMask , xK_p     ) $ spawn "shutdown now"
+    , key "Screenshot"            (modm                 , xK_Print ) $ spawn "flameshot gui"
     ] ^++^
   keySet "Windows"
     [ key "Close focused"   (modm              , xK_BackSpace) kill
     , key "Close all in ws" (modm .|. shiftMask, xK_BackSpace) killAll
-    , key "Refresh size"    (modm              , xK_n        ) refresh
     , key "Focus next"      (modm              , xK_j        ) $ windows W.focusDown
     , key "Focus previous"  (modm              , xK_k        ) $ windows W.focusUp
-    , key "Focus master"    (modm              , xK_m        ) $ windows W.focusMaster
-    , key "Swap master"     (modm              , xK_Return   ) $ windows W.swapMaster
     , key "Swap next"       (modm .|. shiftMask, xK_j        ) $ windows W.swapDown
     , key "Swap previous"   (modm .|. shiftMask, xK_k        ) $ windows W.swapUp
     , key "Shrink master"   (modm              , xK_h        ) $ sendMessage Shrink
@@ -264,7 +252,6 @@ myKeys conf@XConfig {XMonad.modMask = modm} =
   keySet "Workspaces"
     [ key "Next"          (modm              , xK_period    ) nextWS'
     , key "Previous"      (modm              , xK_comma     ) prevWS'
-    , key "Remove"        (modm .|. shiftMask, xK_F4        ) removeWorkspace
     ] ++ switchWsById
  where
   togglePolybar = spawn "polybar-msg cmd toggle &"
@@ -507,14 +494,6 @@ projects =
             , projectStartHook = Nothing
             }
   ]
-
-projectsTheme :: XPConfig
-projectsTheme = amberXPConfig
-  { bgHLight = "#002b36"
-  , font     = "xft:Bitstream Vera Sans Mono:size=8:antialias=true"
-  , height   = 50
-  , position = CenteredAt 0.5 0.5
-  }
 
 ------------------------------------------------------------------------
 -- Event handling
