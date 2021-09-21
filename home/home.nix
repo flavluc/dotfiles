@@ -2,6 +2,7 @@
 
 let
   defaultPkgs = with pkgs; [
+    anki
     any-nix-shell        # fish support for nix shell
     arandr               # simple GUI for xrandr
     asciinema            # record the terminal

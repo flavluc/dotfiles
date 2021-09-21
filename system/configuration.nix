@@ -46,17 +46,34 @@ in
     package = pkgs.pulseaudioFull;
   };
 
-  fonts.fonts = with pkgs; [
-    customFonts
-    myfonts.icomoon-feather
-    carlito
-    dejavu_fonts
-    ipafont
-    kochi-substitute
-    source-code-pro
-    ttf_bitstream_vera
-    emacs-all-the-icons-fonts
-  ];
+  fonts = {
+    fonts = with pkgs; [
+      customFonts
+      myfonts.icomoon-feather
+      dejavu_fonts
+      ipafont
+      kochi-substitute
+      emacs-all-the-icons-fonts
+    ];
+
+    fontconfig.defaultFonts = {
+      monospace = [
+        "DejaVu Sans Mono"
+        "IPAGothic"
+      ];
+      sansSerif = [
+        "DejaVu Sans"
+        "IPAPGothic"
+      ];
+      serif = [
+        "DejaVu Serif"
+        "IPAPMincho"
+      ];
+    };
+  };
+
+  i18n.inputMethod.enabled = "fcitx";
+  i18n.inputMethod.fcitx.engines = with pkgs.fcitx-engines; [ mozc ];
 
   programs.fish.enable = true;
 
@@ -89,9 +106,6 @@ in
     font = "Lat2-Terminus16";
     keyMap = "br-abnt2";
   };
-
-  i18n.inputMethod.enabled = "fcitx";
-  i18n.inputMethod.fcitx.engines = with pkgs.fcitx-engines; [ mozc ];
 
   system.stateVersion = "21.05";
 }

@@ -13,6 +13,14 @@ let
     ${pkgs.blueman}/bin/blueman-applet &
     ${pkgs.gnome3.networkmanagerapplet}/bin/nm-applet --sm-disable --indicator &
   '';
+
+  fcitxOpts = ''
+    export XMODIFIERS="@im=fcitx"
+    export XMODIFIER="@im=fcitx"
+    export GTK_IM_MODULE="fcitx"
+    export QT_IM_MODULE="fcitx"
+    fcitx &
+  '';
 in
 {
   xresources.properties = {
@@ -34,7 +42,7 @@ in
       size = 32;
     };
 
-    initExtra = extra + polybarOpts;
+    initExtra = extra + polybarOpts + fcitxOpts;
 
     windowManager.xmonad = {
       enable = true;
