@@ -53,22 +53,14 @@ in
       dejavu_fonts
       ipafont
       kochi-substitute
+      source-code-pro
       emacs-all-the-icons-fonts
     ];
 
     fontconfig.defaultFonts = {
-      monospace = [
-        "DejaVu Sans Mono"
-        "IPAGothic"
-      ];
-      sansSerif = [
-        "DejaVu Sans"
-        "IPAPGothic"
-      ];
-      serif = [
-        "DejaVu Serif"
-        "IPAPMincho"
-      ];
+      monospace = ["Iosevka Sans Mono" "IPAGothic"];
+      sansSerif = ["Iosevka Sans" "IPAPGothic"];
+      serif = ["Iosevka Serif" "IPAPMincho"];
     };
   };
 

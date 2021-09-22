@@ -1,0 +1,7 @@
+#+TITLE: dotfiles
+
+* dotfiles
+
+these are my configuration files to generate my operational system. they are pretty specific to my needs and taste, but maybe you'll find something useful.
+
+i'm too lazy to write a proper org documment right now, so for the time being enjoy some screenshots:
