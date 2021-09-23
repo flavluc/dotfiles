@@ -499,8 +499,11 @@ projects =
 myEventHook = docksEventHook <+> ewmhDesktopsEventHook <+> fullscreenEventHook <+> fadeWindowsEventHook
 
 myFadeHook = composeAll [ opaque
-                        , isUnfocused              --> transparency 0.1
-                        , appName =? "emacs"       --> transparency 0.2
-                        , appName =? "Alacritty"   --> transparency 0.2
-                        , appName =? "code"        --> transparency 0.2
+                        , isUnfocused                   --> transparency 0.1
+                        , appName =? "emacs"            --> transparency 0.2
+                        , appName =? "Alacritty"        --> transparency 0.2
+                        , appName =? "telegram-desktop" --> transparency 0.15
+                        , appName =? "discord"          --> transparency 0.2
+                        , appName =? "code"             --> transparency 0.2
+                        , isFullscreen                  --> opaque
                         ]

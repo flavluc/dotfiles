@@ -7,6 +7,7 @@ let
     arandr               # simple GUI for xrandr
     asciinema            # record the terminal
     audacious            # simple music player
+    betterdiscordctl     # a better discord
     bitwarden-cli        # command-line client for the password manager
     bottom               # alternative to htop & ytop
     cachix               # nix caching
