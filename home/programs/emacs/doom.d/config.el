@@ -53,18 +53,22 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
+(after! org
+  (setq org-agenda-files (directory-files-recursively "~/Desktop/myself" "\\.org$"))
+  (setq org-log-done 'time)
+)
+
 (setq
  confirm-kill-emacs nil
  elcord-use-major-mode-as-main-icon t
  projectile-project-search-path '("~/Desktop" "~/Desktop/code")
  )
 
-(elcord-mode)
 (projectile-clear-known-projects)
 (projectile-discover-projects-in-search-path)
 (global-visual-line-mode t)
 
-(setq-default tab-width 4)
+(setq-default tab-width 2)
 (setq evil-want-fine-undo t)
 
 
@@ -79,7 +83,6 @@
 
 ;; Adding the missing arrow-key variants of the window navigation/swapping commands
 (map! :map evil-window-map
-      "SPC" #'rotate-layout
       ;; Navigation
       "<left>"     #'evil-window-left
       "<down>"     #'evil-window-down
