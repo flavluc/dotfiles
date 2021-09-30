@@ -6,12 +6,10 @@ set +x
 prepare_home() {
   echo "Creating config..."
 
-  # Polybar logs
   mkdir -p $HOME/.config/polybar/logs
   touch $HOME/.config/polybar/logs/bottom.log
   touch $HOME/.config/polybar/logs/top.log
 
-  # Home manager files
   rm -rf $HOME/.config/nixpkgs
   mkdir -p $HOME/.config/nixpkgs/
   cp -r home/* $HOME/.config/nixpkgs/
@@ -29,18 +27,13 @@ build_home() {
   prepare_home
   install_hm
 
-  # Switch to HM's latest build
   echo "Running Home Manager switch..."
   home-manager switch -b /dev/null
 }
 
 build_system() {
   sudo nix-channel --add https://nixos.org/channels/nixos-unstable nixos
-  sudo cp system/configuration.nix /etc/nixos/
-  sudo cp system/hardware-configuration.nix /etc/nixos/
-  sudo cp -r system/fonts/ /etc/nixos/
-  sudo cp -r system/machine/ /etc/nixos/
-  sudo cp -r system/wm/ /etc/nixos/
+  sudo cp -r system/* /etc/nixos
   sudo nixos-rebuild -I nixpkgs=$(cat ./pinned/nixpkgs) switch --upgrade
 }
 

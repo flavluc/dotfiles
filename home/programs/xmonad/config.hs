@@ -444,7 +444,7 @@ ossWs = "\xf120" -- terminal icon
 devWs = "\xf121" -- code icon
 chtWs = "\xf086" -- chat icon
 mscWs = "\xf1bc" -- spotify icon
-medWs = "\xf144" -- media icon
+medWs = "\xf21b" -- anon icon
 etcWs = "\xf069" -- misc icon
 
 myWS :: [WorkspaceId]
@@ -479,7 +479,7 @@ projects =
             }
   , Project { projectName      = medWs
             , projectDirectory = "/etc/nixos/"
-            , projectStartHook = Nothing
+            , projectStartHook = Just $ do spawn "firefox --private-window"
             }
   , Project { projectName      = etcWs
             , projectDirectory = "~/"
