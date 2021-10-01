@@ -2,8 +2,7 @@
 
 let
   defaultPkgs = with pkgs; [
-    #anki
-    anki-bin
+    anki-bin             # space repetition system
     any-nix-shell        # fish support for nix shell
     arandr               # simple GUI for xrandr
     asciinema            # record the terminal
@@ -53,7 +52,19 @@ let
     yad                  # yet another dialog - fork of zenity
 
     # fixes the `ar` error required by cabal
-    binutils-unwrapped
+    # binutils-unwrapped
+  ];
+
+  devPkgs = with pkgs; [
+    cargo
+    elixir
+    fsharp
+    ghc
+    gcc
+    ocaml
+    pythonFull
+    rustc
+    stack
   ];
 
   gitPkgs = with pkgs.gitAndTools; [
@@ -68,17 +79,6 @@ let
     evince         # pdf reader
     gnome-calendar # calendar
     nautilus       # file manager
-  ];
-
-  haskellPkgs = with pkgs.haskellPackages; [
-    brittany                # code formatter
-    cabal2nix               # convert cabal projects to nix
-    cabal-install           # package manager
-    ghc                     # compiler
-    stack                   # build tool
-    haskell-language-server # haskell IDE (ships with ghcide)
-    hoogle                  # documentation
-    nix-tree                # visualize nix dependencies
   ];
 
   polybarPkgs = with pkgs; [
@@ -130,7 +130,14 @@ in
     homeDirectory = "/home/fuyu";
     stateVersion  = "21.03";
 
-    packages = defaultPkgs ++ gitPkgs ++ gnomePkgs ++ haskellPkgs ++ polybarPkgs ++ xmonadPkgs;
+    packages = builtins.concatLists [
+      defaultPkgs
+      devPkgs
+      gitPkgs
+      gnomePkgs
+      polybarPkgs
+      xmonadPkgs
+    ];
 
     sessionVariables = {
       DISPLAY = ":0";
