@@ -23,6 +23,14 @@ in
       enable   = true;
     };
     useDHCP = false;
+    
+    # work stuff
+    extraHosts = ''
+      127.0.0.1   model-marketplace-server
+      127.0.0.1   model-marketplace-database model-market-place-database
+      127.0.0.1   model-marketplace-client
+      127.0.0.1   postgres
+    '';
   };
 
   time.timeZone = "America/Sao_Paulo";

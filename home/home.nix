@@ -21,6 +21,8 @@ let
     exa                  # a better `ls`
     fd                   # "find" for files
     gimp                 # gnu image manipulation program
+    git-crypt            # encryption/decryption for files in a git repo
+    gnupg                # free-software replacement for Symantec's PGP
     hyperfine            # command-line benchmarking tool
     killall              # kill processes by name
     libreoffice          # office suite
@@ -36,6 +38,7 @@ let
     pavucontrol          # pulseaudio volume control
     paprefs              # pulseaudio preferences
     pasystray            # pulseaudio systray
+    pinentry             # dialog programs for GnuPG
     playerctl            # music player controller
     prettyping           # a nicer ping
     pulsemixer           # pulseaudio mixer
@@ -47,6 +50,7 @@ let
     slack                # messaging client
     spotify              # music source
     tdesktop             # telegram messaging client
+    teams                # the worst team communication platform ever created
     tldr                 # summary of a man page
     tree                 # display files in a tree view
     vlc                  # media player
@@ -60,10 +64,12 @@ let
 
   devPkgs = with pkgs; [
     cargo
+    dotnet-sdk_5
     elixir
     fsharp
     ghc
     gcc
+    nodejs-14_x
     ocaml
     pythonFull
     rustc
