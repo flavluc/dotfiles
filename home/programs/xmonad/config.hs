@@ -313,15 +313,12 @@ myMouseBindings XConfig {XMonad.modMask = modm} = M.fromList
 --
 -- The available layouts.  Note that each layout is separated by |||,
 -- which denotes layout choice.
---
+
 myLayout =
   avoidStruts
     . smartBorders
     . fullScreenToggle
-    . comLayout
-    -- . devLayout
-    . webLayout
-    . wrkLayout $ (tiled ||| Mirror tiled ||| column3 ||| full)
+    $ (tiled ||| Mirror tiled ||| column3 ||| full)
    where
      -- default tiling algorithm partitions the screen into two panes
      tiled   = gapSpaced 10 $ Tall nmaster delta ratio
@@ -340,12 +337,6 @@ myLayout =
      -- Gaps bewteen windows
      myGaps gap  = gaps [(U, gap),(D, gap),(L, gap),(R, gap)]
      gapSpaced g = spacing g . myGaps g
-
-     -- Per workspace layout
-     comLayout = onWorkspace chtWs (full ||| tiled)
-     --devLayout = onWorkspace devWs (Mirror tiled ||| full)
-     webLayout = onWorkspace webWs (tiled ||| full)
-     wrkLayout = onWorkspace mscWs (tiled ||| full)
 
      -- Fullscreen
      fullScreenToggle = mkToggle (single NBFULL)
@@ -445,11 +436,13 @@ ossWs = "\xf120" -- terminal icon
 devWs = "\xf121" -- code icon
 chtWs = "\xf086" -- chat icon
 mscWs = "\xf1bc" -- spotify icon
+wrkWs = "\xf198" -- slack icon
+agdWs = "\xf022" -- list icon
 medWs = "\xf21b" -- anon icon
 etcWs = "\xf069" -- misc icon
 
 myWS :: [WorkspaceId]
-myWS = [webWs, ossWs, devWs, chtWs, mscWs, medWs, etcWs]
+myWS = [webWs, ossWs, devWs, chtWs, mscWs, wrkWs, agdWs, medWs, etcWs]
 
 ------------------------------------------------------------------------
 -- Dynamic Projects
@@ -477,6 +470,15 @@ projects =
             , projectDirectory = "~/"
             , projectStartHook = Just $ do spawn "firefox --new-window youtube.com"
                                            spawn "spotify"
+            }
+  , Project { projectName      = wrkWs
+            , projectDirectory = "~/"
+            , projectStartHook = Just $ do spawn "zulip"
+                                           spawn "signal-desktop"
+            }
+  , Project { projectName      = agdWs
+            , projectDirectory = "~/"
+            , projectStartHook = Just $ do spawn "firefox --new-window"
             }
   , Project { projectName      = medWs
             , projectDirectory = "/etc/nixos/"

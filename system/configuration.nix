@@ -49,6 +49,8 @@ in
     '';
   };
 
+  virtualisation.docker.enable = true;
+
   fonts = {
     fonts = with pkgs; [
       customFonts
@@ -74,7 +76,7 @@ in
 
   users.users.fuyu = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" ];
+    extraGroups = [ "wheel" "networkmanager" "docker" ];
     shell = pkgs.fish;
   };
 
