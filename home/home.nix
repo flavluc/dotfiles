@@ -39,8 +39,10 @@ let
     playerctl            # music player controller
     prettyping           # a nicer ping
     pulsemixer           # pulseaudio mixer
+    qbittorrent          # bittorrent client
     ripgrep              # fast grep
     rnix-lsp             # nix lsp server
+    signal-desktop       # encrypted instant messaging service
     simplescreenrecorder # self-explanatory
     slack                # messaging client
     spotify              # music source
@@ -50,6 +52,7 @@ let
     vlc                  # media player
     xclip                # clipboard support (also for neovim)
     yad                  # yet another dialog - fork of zenity
+    zulip                # desktop client for zulip chat
 
     # fixes the `ar` error required by cabal
     # binutils-unwrapped

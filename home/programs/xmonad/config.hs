@@ -108,7 +108,7 @@ main = mkDbusClient >>= main'
 main' :: D.Client -> IO ()
 main' dbus = xmonad . docks . ewmh . dynProjects . keybindings . urgencyHook $ def
   { terminal           = myTerminal
-  , focusFollowsMouse  = False
+  , focusFollowsMouse  = True
   , clickJustFocuses   = False
   , borderWidth        = 0
   , modMask            = myModMask
@@ -131,7 +131,8 @@ main' dbus = xmonad . docks . ewmh . dynProjects . keybindings . urgencyHook $ d
 -- Perform an arbitrary action each time xmonad starts or is restarted
 -- with mod-q.  Used by, e.g., XMonad.Layout.PerWorkspace to initialize
 -- per-workspace layout choices.
-myStartupHook = startupHook def
+myStartupHook = do
+  spawnOnce "nitrogen --restore &"
 
 -- original idea: https://pbrisbin.com/posts/using_notify_osd_for_xmonad_notifications/
 data LibNotifyUrgencyHook = LibNotifyUrgencyHook deriving (Read, Show)
