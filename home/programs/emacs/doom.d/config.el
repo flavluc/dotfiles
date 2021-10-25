@@ -35,7 +35,6 @@
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type t)
 
-
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
 ;; - `load!' for loading external *.el files relative to this one
@@ -61,7 +60,7 @@
 (setq
  confirm-kill-emacs nil
  elcord-use-major-mode-as-main-icon t
- projectile-project-search-path '("~/Desktop" "~/Desktop/code")
+ projectile-project-search-path '("~/Desktop" ("~/Desktop/code" . 2))
  )
 
 (projectile-clear-known-projects)

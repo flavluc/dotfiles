@@ -24,7 +24,6 @@ let
     git-crypt            # encryption/decryption for files in a git repo
     gnupg                # free-software replacement for Symantec's PGP
     hyperfine            # command-line benchmarking tool
-    killall              # kill processes by name
     libreoffice          # office suite
     libnotify            # notify-send command
     multilockscreen      # fast lockscreen based on i3lock
@@ -38,6 +37,7 @@ let
     pavucontrol          # pulseaudio volume control
     paprefs              # pulseaudio preferences
     pasystray            # pulseaudio systray
+    pciutils             # util commands for pci info
     pinentry             # dialog programs for GnuPG
     playerctl            # music player controller
     prettyping           # a nicer ping
@@ -57,9 +57,10 @@ let
     xclip                # clipboard support (also for neovim)
     yad                  # yet another dialog - fork of zenity
     zulip                # desktop client for zulip chat
+  ];
 
-    # fixes the `ar` error required by cabal
-    # binutils-unwrapped
+  nurPkgs = with pkgs.nur.repos; [
+    wolfangaukang.stremio # torrent video streaming
   ];
 
   devPkgs = with pkgs; [
@@ -144,6 +145,7 @@ in
       devPkgs
       gitPkgs
       gnomePkgs
+      nurPkgs
       polybarPkgs
       xmonadPkgs
     ];
