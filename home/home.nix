@@ -92,7 +92,7 @@ let
   ];
 
   polybarPkgs = with pkgs; [
-    font-awesome-ttf      # awesome fonts
+    font-awesome      # awesome fonts
     material-design-icons # fonts with glyphs
   ];
 
@@ -150,6 +150,12 @@ in
       xmonadPkgs
     ];
 
+    pointerCursor = {
+      name = "Vanilla-DMZ";
+      package = pkgs.vanilla-dmz;
+      size = 32;
+    };
+
     sessionVariables = {
       DISPLAY = ":0";
       EDITOR = "emacs";
@@ -172,7 +178,6 @@ in
 
     direnv = {
       enable = true;
-      enableFishIntegration = true;
       nix-direnv.enable = true;
     };
 
@@ -223,7 +228,7 @@ in
       enable = true;
       inactiveInterval = 30;
       lockCmd = "${pkgs.multilockscreen}/bin/multilockscreen -l dim";
-      xautolockExtraOptions = [
+      xautolock.extraOptions = [
         "Xautolock.killer: systemctl suspend"
       ];
     };

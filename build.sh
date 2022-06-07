@@ -25,7 +25,6 @@ install_hm() {
 
 build_home() {
   prepare_home
-  install_hm
 
   echo "Running Home Manager switch..."
   home-manager switch -b /dev/null
@@ -48,6 +47,8 @@ case $1 in
     build_home;;
   "system")
     build_system;;
+  "install")
+    install_hm;;
   *)
     build_all;;
 esac

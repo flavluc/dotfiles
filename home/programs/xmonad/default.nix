@@ -11,7 +11,7 @@ let
     ${pkgs.nitrogen}/bin/nitrogen --restore &
     ${pkgs.pasystray}/bin/pasystray &
     ${pkgs.blueman}/bin/blueman-applet &
-    ${pkgs.gnome3.networkmanagerapplet}/bin/nm-applet --sm-disable --indicator &
+    ${pkgs.networkmanagerapplet}/bin/nm-applet --sm-disable --indicator &
   '';
 
   fcitxOpts = ''
@@ -32,15 +32,8 @@ in
     "Xft.rgba" = "rgb";
   };
 
-
   xsession = {
     enable = true;
-
-    pointerCursor = {
-      name = "Vanilla-DMZ";
-      package = pkgs.vanilla-dmz;
-      size = 32;
-    };
 
     initExtra = extra + polybarOpts + fcitxOpts;
 

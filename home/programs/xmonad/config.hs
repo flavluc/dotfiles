@@ -10,6 +10,7 @@ import           XMonad
 import           XMonad.Actions.CycleWS                ( Direction1D(..)
                                                        , WSType(..)
                                                        , findWorkspace
+                                                       , anyWS
                                                        )
 import           XMonad.Actions.DynamicProjects        ( Project(..)
                                                        , dynamicProjects
@@ -23,8 +24,7 @@ import           XMonad.Actions.SpawnOn                ( manageSpawn
                                                        )
 import           XMonad.Actions.WithAll                ( killAll )
 import           XMonad.Hooks.EwmhDesktops             ( ewmh
-                                                       , ewmhDesktopsEventHook
-                                                       , fullscreenEventHook
+                                                       , ewmhFullscreen
                                                        )
 import           XMonad.Hooks.FadeWindows              ( fadeWindowsLogHook
                                                        , fadeWindowsEventHook
@@ -40,7 +40,6 @@ import           XMonad.Hooks.ManageDocks              ( Direction2D(..)
                                                        , ToggleStruts(..)
                                                        , avoidStruts
                                                        , docks
-                                                       , docksEventHook
                                                        )
 import           XMonad.Hooks.ManageHelpers            ( (-?>)
                                                        , composeOne
@@ -106,7 +105,7 @@ main :: IO ()
 main = mkDbusClient >>= main'
 
 main' :: D.Client -> IO ()
-main' dbus = xmonad . docks . ewmh . dynProjects . keybindings . urgencyHook $ def
+main' dbus = xmonad . docks . ewmh . ewmhFullscreen . dynProjects . keybindings . urgencyHook $ def
   { terminal           = myTerminal
   , focusFollowsMouse  = True
   , clickJustFocuses   = False
@@ -120,19 +119,15 @@ main' dbus = xmonad . docks . ewmh . dynProjects . keybindings . urgencyHook $ d
   , manageHook         = myManageHook
   , handleEventHook    = myEventHook
   , logHook            = fadeWindowsLogHook myFadeHook <+> myPolybarLogHook dbus
-  , startupHook        = myStartupHook
+  , startupHook        = startupHook
   }
  where
   myModMask   = mod4Mask -- super as the mod key
   dynProjects = dynamicProjects projects
   keybindings = addDescrKeys' ((myModMask, xK_F1), showKeybindings) myKeys
   urgencyHook = withUrgencyHook LibNotifyUrgencyHook
-
--- Perform an arbitrary action each time xmonad starts or is restarted
--- with mod-q.  Used by, e.g., XMonad.Layout.PerWorkspace to initialize
--- per-workspace layout choices.
-myStartupHook = do
-  spawnOnce "nitrogen --restore &"
+  startupHook = do
+    spawnOnce "nitrogen --restore &"
 
 -- original idea: https://pbrisbin.com/posts/using_notify_osd_for_xmonad_notifications/
 data LibNotifyUrgencyHook = LibNotifyUrgencyHook deriving (Read, Show)
@@ -188,7 +183,7 @@ myPolybarLogHook dbus = dynamicLogWithPP (polybarHook dbus)
 -- Key bindings. Add, modify or remove key bindings here.
 --
 
-myTerminal   = "alacritty"
+myTerminal   = "nixGL alacritty"
 myEditor     = "emacs"
 appLauncher  = "rofi -modi drun,ssh,window -show drun -show-icons"
 screenLocker = "multilockscreen -l dim"
@@ -278,7 +273,7 @@ nextWS' = switchWS Next
 prevWS' = switchWS Prev
 
 switchWS dir =
-  findWorkspace filterOutNSP dir AnyWS 1 >>= windows . W.view
+  findWorkspace filterOutNSP dir anyWS 1 >>= windows . W.view
 
 filterOutNSP =
   let g f xs = filter (\(W.Workspace t _ _) -> t /= "NSP") (f xs)
@@ -431,15 +426,15 @@ scratchpads = scratchpadApp <$> [ audacious, btm, nautilus, scr, spotify ]
 ------------------------------------------------------------------------
 -- Workspaces
 --
-webWs = "\xf269" -- firefox icon
-ossWs = "\xf120" -- terminal icon
-devWs = "\xf121" -- code icon
-chtWs = "\xf086" -- chat icon
-mscWs = "\xf1bc" -- spotify icon
-wrkWs = "\xf198" -- slack icon
-agdWs = "\xf022" -- list icon
-medWs = "\xf21b" -- anon icon
-etcWs = "\xf069" -- misc icon
+webWs = "1" -- firefox icon
+ossWs = "2" -- terminal icon
+devWs = "3" -- code icon
+chtWs = "4" -- chat icon
+mscWs = "5" -- spotify icon
+wrkWs = "6" -- slack icon
+agdWs = "7" -- list icon
+medWs = "8" -- anon icon
+etcWs = "9" -- misc icon
 
 myWS :: [WorkspaceId]
 myWS = [webWs, ossWs, devWs, chtWs, mscWs, wrkWs, agdWs, medWs, etcWs]
@@ -468,12 +463,12 @@ projects =
             }
   , Project { projectName      = mscWs
             , projectDirectory = "~/"
-            , projectStartHook = Just $ do spawn "firefox --new-window youtube.com"
+            , projectStartHook = Just $ do spawn "firefox --private-window youtube.com"
                                            spawn "spotify"
             }
   , Project { projectName      = wrkWs
             , projectDirectory = "~/"
-            , projectStartHook = Just $ do spawn "zulip"
+            , projectStartHook = Just $ do spawn "slack"
                                            spawn "signal-desktop"
             }
   , Project { projectName      = agdWs
@@ -481,7 +476,7 @@ projects =
             , projectStartHook = Just $ do spawn "firefox --new-window"
             }
   , Project { projectName      = medWs
-            , projectDirectory = "/etc/nixos/"
+            , projectDirectory = "~/"
             , projectStartHook = Just $ do spawn "firefox --private-window"
             }
   , Project { projectName      = etcWs
@@ -493,20 +488,18 @@ projects =
 ------------------------------------------------------------------------
 -- Event handling
 
--- * EwmhDesktops users should change this to ewmhDesktopsEventHook
---
 -- Defines a custom handler function for X Events. The function should
 -- return (All True) if the default handler is to be run afterwards. To
 -- combine event hooks use mappend or mconcat from Data.Monoid.
 --
-myEventHook = docksEventHook <+> ewmhDesktopsEventHook <+> fullscreenEventHook <+> fadeWindowsEventHook
+myEventHook = fadeWindowsEventHook
 
 myFadeHook = composeAll [ opaque
-                        , isUnfocused                   --> transparency 0.1
+                        -- , isUnfocused                   --> transparency 0.1
                         , appName =? "emacs"            --> transparency 0.2
                         , appName =? "Alacritty"        --> transparency 0.2
-                        , appName =? "telegram-desktop" --> transparency 0.15
-                        , appName =? "discord"          --> transparency 0.2
-                        , appName =? "code"             --> transparency 0.2
+                        -- , appName =? "telegram-desktop" --> transparency 0.15
+                        -- , appName =? "discord"          --> transparency 0.2
+                        -- , appName =? "code"             --> transparency 0.2
                         , isFullscreen                  --> opaque
                         ]

@@ -23,9 +23,7 @@
       fsType = "vfat";
     };
 
-  swapDevices =
-    [ { device = "/dev/disk/by-uuid/0ec4a461-a9d0-49e2-9c9b-63779866e51d"; }
-    ];
+  swapDevices = lib.mkForce [ ];
 
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
 }

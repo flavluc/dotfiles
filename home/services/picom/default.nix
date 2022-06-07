@@ -4,7 +4,7 @@
   services.picom = {
     enable = true;
     extraOptions = ''
-        corner-radius = 10;
+        corner-radius = 15;
         xinerama-shadow-crop = true;
     '';
     experimentalBackends = true;
@@ -14,7 +14,7 @@
     ];
 
     fade = true;
-    fadeDelta = 5;
+    fadeDelta = 10;
     vSync = true;
     package = pkgs.picom.overrideAttrs(o: {
         src = pkgs.fetchFromGitHub {

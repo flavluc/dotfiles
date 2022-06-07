@@ -43,6 +43,10 @@ in
     firefox
   ];
 
+  environment.shellAliases = {
+    "alacritty" = "nixGL alacritty";
+  };
+
   sound = {
     enable = true;
     mediaKeys.enable = true;

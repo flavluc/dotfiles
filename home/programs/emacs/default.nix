@@ -1,35 +1,42 @@
-{ pkgs, config, ... }:
 
+{ pkgs, ... }:
+
+let
+  emacs-overlay = import (
+    builtins.fetchTarball {
+      url =
+        "https://github.com/nix-community/emacs-overlay/archive/master.tar.gz";
+    }
+  );
+in
 {
-  home.sessionPath = [ "${config.xdg.configHome}/emacs/bin" ];
-  home.sessionVariables = {
-    DOOMDIR = "${config.xdg.configHome}/doom-config";
-    DOOMLOCALDIR = "${config.xdg.configHome}/doom-local";
+  nixpkgs.overlays = [ emacs-overlay ];
+
+  programs.emacs = {
+    enable = true;
+    extraPackages = (
+      epkgs:
+      (
+        with epkgs; [
+          use-package
+	  doom-modeline
+        ]
+      )
+    );
   };
 
-  xdg.configFile = {
-    "doom-config/config.el".text = (builtins.readFile ./doom.d/config.el);
-    "doom-config/init.el".text = (builtins.readFile ./doom.d/init.el);
-    "doom-config/packages.el".text = (builtins.readFile ./doom.d/packages.el);
-    "emacs" = {
-      source = builtins.fetchGit "https://github.com/hlissner/doom-emacs";
-      onChange = "${pkgs.writeShellScript "doom-change" ''
-        export DOOMDIR="${config.home.sessionVariables.DOOMDIR}"
-        export DOOMLOCALDIR="${config.home.sessionVariables.DOOMLOCALDIR}"
-        if [ ! -d "$DOOMLOCALDIR" ]; then
-          ${config.xdg.configHome}/emacs/bin/doom -y install
-        else
-          ${config.xdg.configHome}/emacs/bin/doom -y sync -u
-        fi
-      ''}";
+  home.file = {
+    ".emacs.d" = {
+      source = ./emacs.d;
+      recursive = true;
     };
   };
 
-  programs.emacs.enable = true;
+  xresources.properties = {
+    "Emacs.menuBar" = false;
+    "Emacs.toolBar" = false;
+    "Emacs.verticalScrollBars" = false;
+  };
 
-#  services.emacs = {
-#    enable = true;
-#    client.enable = true;
-#    socketActivation.enable = true;
-#  };
+  services.emacs.enable = true;
 }
