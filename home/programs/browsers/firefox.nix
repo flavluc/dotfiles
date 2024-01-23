@@ -90,7 +90,7 @@ in
           link-cleaner
           privacy-badger
           tab-session-manager
-          # tree-style-tab @TODO returning 404 for some reason
+          tree-style-tab
           ublock-origin
           unpaywall
           vimium

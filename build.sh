@@ -22,6 +22,12 @@ install_nixGL(){
   nix-env -iA nixgl.auto.nixGLDefault
 }
 
+# https://github.com/NixOS/nixpkgs/issues/59927
+xbacklight_permissions(){
+  sudo chown root:video /sys/class/backlight/intel_backlight/brightness
+  sudo chmod 0664 /sys/class/backlight/intel_backlight/brightness
+}
+
 build_system() {
   create_config
 

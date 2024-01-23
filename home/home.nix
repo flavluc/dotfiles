@@ -24,6 +24,7 @@ let
     git-crypt            # encryption/decryption for files in a git repo
     gnupg                # free-software replacement for Symantec's PGP
     hyperfine            # command-line benchmarking tool
+    krita                # a free and open source painting application
     libreoffice          # office suite
     libnotify            # notify-send command
     multilockscreen      # fast lockscreen based on i3lock
@@ -49,6 +50,7 @@ let
     simplescreenrecorder # self-explanatory
     slack                # messaging client
     spotify              # music source
+    stremio              # torrent streaming
     tdesktop             # telegram messaging client
     tldr                 # summary of a man page
     tree                 # display files in a tree view
@@ -57,10 +59,6 @@ let
     yad                  # yet another dialog - fork of zenity
     zulip                # desktop client for zulip chat
   ];
-
-#  nurPkgs = with pkgs.nur.repos; [
-#    wolfangaukang.stremio # torrent video streaming
-#  ];
 
   devPkgs = with pkgs; [
     cargo
@@ -144,7 +142,6 @@ in
       devPkgs
       gitPkgs
       gnomePkgs
-      #nurPkgs
       polybarPkgs
       xmonadPkgs
     ];
