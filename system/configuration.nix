@@ -42,6 +42,7 @@ in
     vim
     wget
     firefox
+    brightnessctl
   ];
 
   environment.shellAliases = {
@@ -64,7 +65,7 @@ in
   virtualisation.docker.enable = true;
 
   fonts = {
-    fonts = with pkgs; [
+    packages = with pkgs; [
       customFonts
       myfonts.icomoon-feather
       dejavu_fonts
@@ -88,7 +89,7 @@ in
 
   users.users.fuyu = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" "docker" ];
+    extraGroups = [ "wheel" "networkmanager" "docker" "video" ];
     shell = pkgs.fish;
   };
 
@@ -97,7 +98,10 @@ in
   nixpkgs.config.allowUnfree = true;
 
   nix = {
-    autoOptimiseStore = true;
+    settings = {
+      auto-optimise-store = true;
+      trusted-users = [ "root" "fuyu" ];
+    };
 
     gc = {
       automatic = true;
@@ -110,7 +114,6 @@ in
       keep-derivations = true
     '';
 
-    trustedUsers = [ "root" "fuyu" ];
   };
 
   console = {

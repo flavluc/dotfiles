@@ -12,7 +12,14 @@ create_config() {
 
   sudo cp -r system/* /etc/nixos
   sudo cp -r system/* /etc/nixos
+  sudo rm -rf /etc/nixos/home
   sudo cp -r home /etc/nixos/home
+}
+
+install_nixGL(){
+  echo "Installing nixGL..."
+  nix-channel --add https://github.com/guibou/nixGL/archive/main.tar.gz nixgl && nix-channel --update
+  nix-env -iA nixgl.auto.nixGLDefault
 }
 
 build_system() {
