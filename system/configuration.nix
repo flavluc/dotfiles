@@ -13,6 +13,7 @@ in
 {
   imports =
     [
+      <home-manager/nixos>
       ./hardware-configuration.nix
       ./machine
       ./wm
@@ -54,7 +55,6 @@ in
 
   hardware.pulseaudio = {
     enable = true;
-    extraModules = [ pkgs.pulseaudio-modules-bt ];
     package = pkgs.pulseaudioFull;
     extraConfig = ''
       load-module module-switch-on-connect
@@ -81,8 +81,8 @@ in
     };
   };
 
-  i18n.inputMethod.enabled = "fcitx";
-  i18n.inputMethod.fcitx.engines = with pkgs.fcitx-engines; [ mozc ];
+  # i18n.inputMethod.enabled = "fcitx5";
+  # i18n.inputMethod.fcitx.engines = with pkgs.fcitx-engines; [ mozc ];
 
   programs.fish.enable = true;
 
@@ -91,6 +91,8 @@ in
     extraGroups = [ "wheel" "networkmanager" "docker" ];
     shell = pkgs.fish;
   };
+
+  home-manager.users.fuyu.imports = [ ./home/home.nix ];
 
   nixpkgs.config.allowUnfree = true;
 

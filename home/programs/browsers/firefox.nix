@@ -77,25 +77,24 @@ in
   programs.firefox = {
     enable = true;
 
-    extensions = with pkgs.nur.repos.rycee.firefox-addons; [
-      bitwarden
-      darkreader
-      i-dont-care-about-cookies
-      languagetool
-      link-cleaner
-      privacy-badger
-      tab-session-manager
-      # tree-style-tab @TODO returning 404 for some reason
-      ublock-origin
-      unpaywall
-      vimium
-    ];
-
     profiles = {
       default = {
         id = 0;
         settings = settings;
         userChrome = userChrome;
+        extensions = with pkgs.nur.repos.rycee.firefox-addons; [
+          bitwarden
+          darkreader
+          i-dont-care-about-cookies
+          languagetool
+          link-cleaner
+          privacy-badger
+          tab-session-manager
+          # tree-style-tab @TODO returning 404 for some reason
+          ublock-origin
+          unpaywall
+          vimium
+        ];
       };
     };
   };

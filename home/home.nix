@@ -18,7 +18,7 @@ let
     docker-compose       # docker manager
     dive                 # explore docker layers
     duf                  # disk usage/free utility
-    exa                  # a better `ls`
+    eza                  # a better `ls`
     fd                   # "find" for files
     gimp                 # gnu image manipulation program
     git-crypt            # encryption/decryption for files in a git repo
@@ -50,7 +50,6 @@ let
     slack                # messaging client
     spotify              # music source
     tdesktop             # telegram messaging client
-    teams                # the worst team communication platform ever created
     tldr                 # summary of a man page
     tree                 # display files in a tree view
     vlc                  # media player
@@ -59,20 +58,20 @@ let
     zulip                # desktop client for zulip chat
   ];
 
-  nurPkgs = with pkgs.nur.repos; [
-    wolfangaukang.stremio # torrent video streaming
-  ];
+#  nurPkgs = with pkgs.nur.repos; [
+#    wolfangaukang.stremio # torrent video streaming
+#  ];
 
   devPkgs = with pkgs; [
     cargo
-    dotnet-sdk_5
+    dotnet-sdk_7
     elixir
     fsharp
     ghc
     gcc
-    nodejs-14_x
+    nodejs
     ocaml
-    pythonFull
+    python3
     rustc
     stack
   ];
@@ -145,7 +144,7 @@ in
       devPkgs
       gitPkgs
       gnomePkgs
-      nurPkgs
+      #nurPkgs
       polybarPkgs
       xmonadPkgs
     ];

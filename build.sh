@@ -3,52 +3,25 @@
 # Shows the output of every command
 set +x
 
-prepare_home() {
-  echo "Creating config..."
+create_config() {
+  echo "Creating config files..."
 
   mkdir -p $HOME/.config/polybar/logs
   touch $HOME/.config/polybar/logs/bottom.log
   touch $HOME/.config/polybar/logs/top.log
 
-  rm -rf $HOME/.config/nixpkgs
-  mkdir -p $HOME/.config/nixpkgs/
-  cp -r home/* $HOME/.config/nixpkgs/
-}
-
-install_hm() {
-  echo "Installing Home Manager..."
-  nix-channel --add $(cat ./pinned/home-manager) home-manager
-  nix-channel --update
-  export NIX_PATH=$HOME/.nix-defexpr/channels${NIX_PATH:+:}$NIX_PATH
-  nix-shell '<home-manager>' -A install
-}
-
-build_home() {
-  prepare_home
-
-  echo "Running Home Manager switch..."
-  home-manager switch -b /dev/null
+  sudo cp -r system/* /etc/nixos
+  sudo cp -r system/* /etc/nixos
+  sudo cp -r home /etc/nixos/home
 }
 
 build_system() {
+  create_config
+
   sudo nix-channel --add https://nixos.org/channels/nixos-unstable nixos
-  sudo cp -r system/* /etc/nixos
-  sudo nixos-rebuild -I nixpkgs=$(cat ./pinned/nixpkgs) switch --upgrade
+  sudo nix-channel --add https://github.com/nix-community/home-manager/archive/master.tar.gz home-manager
+
+  sudo nixos-rebuild switch --upgrade
 }
 
-build_all() {
-  echo "Building system and home."
-  cmd="build_system && build_home"
-  nix-shell --run "$cmd"
-}
-
-case $1 in
-  "home")
-    build_home;;
-  "system")
-    build_system;;
-  "install")
-    install_hm;;
-  *)
-    build_all;;
-esac
+build_system
