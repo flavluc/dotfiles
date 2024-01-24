@@ -27,10 +27,13 @@ in
     
     # work stuff
     extraHosts = ''
-      127.0.0.1   model-marketplace-server
-      127.0.0.1   model-marketplace-database model-market-place-database
-      127.0.0.1   model-marketplace-client
-      127.0.0.1   postgres
+      127.0.0.1 neomaril-database
+      127.0.0.1 neomaril-pubsub-channel
+      127.0.0.1 neomaril-airflow
+      127.0.0.1 neomaril-mlflow
+      127.0.0.1 neomaril-facing
+      127.0.0.1 neomaril-serving
+      127.0.0.1 neomaril-blobstorage
     '';
   };
 
@@ -53,6 +56,9 @@ in
     enable = true;
     mediaKeys.enable = true;
   };
+
+  hardware.opentabletdriver.enable = true;
+  hardware.opentabletdriver.daemon.enable = true;
 
   hardware.pulseaudio = {
     enable = true;
@@ -101,6 +107,7 @@ in
     settings = {
       auto-optimise-store = true;
       trusted-users = [ "root" "fuyu" ];
+      experimental-features = [ "nix-command" "flakes" ];
     };
 
     gc = {

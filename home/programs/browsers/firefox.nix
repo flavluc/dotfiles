@@ -90,7 +90,7 @@ in
           link-cleaner
           privacy-badger
           tab-session-manager
-          tree-style-tab
+          # tree-style-tab @TODO fix this after updating nur
           ublock-origin
           unpaywall
           vimium

@@ -1,5 +1,5 @@
 [
   ./dunst
-  #./picom
+  ./picom
   ./polybar
 ]

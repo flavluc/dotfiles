@@ -128,6 +128,7 @@ main' dbus = xmonad . docks . ewmh . ewmhFullscreen . dynProjects . keybindings 
   urgencyHook = withUrgencyHook LibNotifyUrgencyHook
   startupHook = do
     spawnOnce "nitrogen --restore &"
+    spawnOnce "picom &"
 
 -- original idea: https://pbrisbin.com/posts/using_notify_osd_for_xmonad_notifications/
 data LibNotifyUrgencyHook = LibNotifyUrgencyHook deriving (Read, Show)
@@ -202,6 +203,10 @@ myKeys conf@XConfig {XMonad.modMask = modm} =
     , key "Stop"          (0, xF86XK_AudioStop              ) $ spawn $ playerctl "stop"
     , key "Previous"      (0, xF86XK_AudioPrev              ) $ spawn $ playerctl "previous"
     , key "Next"          (0, xF86XK_AudioNext              ) $ spawn $ playerctl "next"
+    ] ^++^
+  keySet "Display"
+    [ key "Light Inc"     (0, xF86XK_MonBrightnessUp         ) $ spawn "xbacklight -inc 5"
+    , key "Light Dec"     (0, xF86XK_MonBrightnessDown       ) $ spawn "xbacklight -dec 5"
     ] ^++^
   keySet "Launchers"
     [ key "Terminal"      (modm               , xK_Return  ) $ spawn (XMonad.terminal conf)
