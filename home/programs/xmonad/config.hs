@@ -118,7 +118,7 @@ main' dbus = xmonad . docks . ewmh . ewmhFullscreen . dynProjects . keybindings 
   , layoutHook         = myLayout
   , manageHook         = myManageHook
   , handleEventHook    = myEventHook
-  , logHook            = fadeWindowsLogHook myFadeHook <+> myPolybarLogHook dbus
+  , logHook            = fadeWindowsLogHook myTransparencyHook <+> myPolybarLogHook dbus
   , startupHook        = startupHook
   }
  where
@@ -496,15 +496,16 @@ projects =
 -- Defines a custom handler function for X Events. The function should
 -- return (All True) if the default handler is to be run afterwards. To
 -- combine event hooks use mappend or mconcat from Data.Monoid.
---
-myEventHook = fadeWindowsEventHook
 
-myFadeHook = composeAll [ opaque
-                        -- , isUnfocused                   --> transparency 0.1
-                        , appName =? "emacs"            --> transparency 0.2
-                        , appName =? "Alacritty"        --> transparency 0.2
-                        -- , appName =? "telegram-desktop" --> transparency 0.15
-                        -- , appName =? "discord"          --> transparency 0.2
-                        -- , appName =? "code"             --> transparency 0.2
-                        , isFullscreen                  --> opaque
-                        ]
+-- myEventHook = fadeWindowsEventHook
+myEventHook = mempty
+
+myTransparencyHook = composeAll [ opaque
+                                , isUnfocused                       --> transparency 0.05
+                                , appName =? "emacs"                --> transparency 0.15
+                                , appName =? "Alacritty"            --> transparency 0.15
+                                -- , appName =? "telegram-desktop"  --> transparency 0.1
+                                -- , appName =? "discord"           --> transparency 0.1
+                                -- , appName =? "code"              --> transparency 0.1
+                                , isFullscreen                      --> opaque
+                                ]
