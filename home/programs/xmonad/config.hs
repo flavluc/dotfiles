@@ -187,7 +187,7 @@ myPolybarLogHook dbus = dynamicLogWithPP (polybarHook dbus)
 myTerminal   = "nixGL alacritty"
 myEditor     = "emacs"
 appLauncher  = "rofi -modi drun,ssh,window -show drun -show-icons"
-screenLocker = "multilockscreen -l dim"
+screenLocker = "betterlockscreen -l dim"
 playerctl c  = "playerctl --player=spotify,%any " <> c
 
 showKeybindings :: [((KeyMask, KeySym), NamedAction)] -> NamedAction
@@ -205,8 +205,8 @@ myKeys conf@XConfig {XMonad.modMask = modm} =
     , key "Next"          (0, xF86XK_AudioNext              ) $ spawn $ playerctl "next"
     ] ^++^
   keySet "Display"
-    [ key "Light Inc"     (0, xF86XK_MonBrightnessUp         ) $ spawn "xbacklight -inc 5"
-    , key "Light Dec"     (0, xF86XK_MonBrightnessDown       ) $ spawn "xbacklight -dec 5"
+    [ key "Light Inc"     (0, xF86XK_MonBrightnessUp         ) $ spawn "xbacklight -inc 4"
+    , key "Light Dec"     (0, xF86XK_MonBrightnessDown       ) $ spawn "xbacklight -dec 4"
     ] ^++^
   keySet "Launchers"
     [ key "Terminal"      (modm               , xK_Return  ) $ spawn (XMonad.terminal conf)

@@ -19,8 +19,6 @@
         modus-themes-bold-constructs nil
         modus-themes-region '(bg-only no-extend))
 
-  ;; Load the theme files before enabling a theme
-  (modus-themes-load-themes)
   :config
   ;; Load the theme of your choice:
   (modus-themes-load-operandi) ;; OR (modus-themes-load-vivendi)
@@ -29,15 +27,11 @@
 ;; Make ESC quit prompts
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
-(use-package ivy
-  :bind (("C-s" . swiper))
-  :init
-  (ivy-mode 1))
-
 (use-package counsel
   :bind (("M-x" . counsel-M-x)
          ("C-x b" . counsel-ibuffer)
          ("C-x C-f" . counsel-find-file)
+         ("C-s" . swiper)
          :map minibuffer-local-map
          ("C-r" . 'counsel-minibuffer-history)))
 

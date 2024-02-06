@@ -27,7 +27,7 @@ let
     krita                # a free and open source painting application
     libreoffice          # office suite
     libnotify            # notify-send command
-    multilockscreen      # fast lockscreen based on i3lock
+    betterlockscreen      # fast lockscreen based on i3lock
     ncdu                 # disk space info (a better du)
     neofetch             # command-line system information
     nix-doc              # nix documentation search tool
@@ -72,6 +72,7 @@ let
     python3
     rustc
     stack
+    vscode
   ];
 
   gitPkgs = with pkgs.gitAndTools; [
@@ -223,7 +224,7 @@ in
     screen-locker = {
       enable = true;
       inactiveInterval = 30;
-      lockCmd = "${pkgs.multilockscreen}/bin/multilockscreen -l dim";
+      lockCmd = "${pkgs.betterlockscreen}/bin/betterlockscreen -l dim";
       xautolock.extraOptions = [
         "Xautolock.killer: systemctl suspend"
       ];

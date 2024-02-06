@@ -19,7 +19,7 @@ in
       (
         with epkgs; [
           use-package
-	  doom-modeline
+	          doom-modeline
         ]
       )
     );
