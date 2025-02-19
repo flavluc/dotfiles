@@ -1,13 +1,6 @@
 { config, pkgs, ... }:
 
 let
-  customFonts = pkgs.nerdfonts.override {
-    fonts = [
-      "JetBrainsMono"
-      "Iosevka"
-    ];
-  };
-
   myfonts = pkgs.callPackage fonts/default.nix { inherit pkgs; };
 in
 {
@@ -52,10 +45,11 @@ in
     "alacritty" = "nixGL alacritty";
   };
 
-  sound = {
-    enable = true;
-    mediaKeys.enable = true;
-  };
+# TODO fix sound
+#  sound = {
+#    enable = true;
+#    mediaKeys.enable = true;
+#  };
 
   hardware.opentabletdriver.enable = true;
   hardware.opentabletdriver.daemon.enable = true;
@@ -72,7 +66,8 @@ in
 
   fonts = {
     packages = with pkgs; [
-      customFonts
+      nerd-fonts.jetbrains-mono
+      nerd-fonts.iosevka
       myfonts.icomoon-feather
       dejavu_fonts
       ipafont

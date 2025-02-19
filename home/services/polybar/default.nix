@@ -3,7 +3,7 @@
 let
   mainBar = pkgs.callPackage ./bar.nix {};
 
-  openCalendar = "${pkgs.gnome3.gnome-calendar}/bin/gnome-calendar";
+  openCalendar = "${pkgs.gnome-calendar}/bin/gnome-calendar";
 
   mypolybar = pkgs.polybar.override {
     alsaSupport   = true;

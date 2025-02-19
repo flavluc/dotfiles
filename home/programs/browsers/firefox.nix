@@ -83,7 +83,7 @@ in
         settings = settings;
         userChrome = userChrome;
         extensions = with pkgs.nur.repos.rycee.firefox-addons; [
-          bitwarden
+          # bitwarden @TODO fix this after updating nur
           darkreader
           i-dont-care-about-cookies
           languagetool

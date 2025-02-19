@@ -9,7 +9,7 @@
 
     dbus = {
       enable = true;
-      #packages = [ pkgs.gnome3.dconf ];
+      #packages = [ pkgs.gnome.dconf ];
     };
 
     xserver = {
@@ -41,7 +41,6 @@
 
   hardware.bluetooth = {
     enable = true;
-    hsphfpd.enable = true;
     settings = {
       General = {
         Enable = "Source,Sink,Media,Socket";

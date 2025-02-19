@@ -12,12 +12,17 @@ let
     bottom               # alternative to htop & ytop
     cachix               # nix caching
     calibre              # e-book reader
+    cloudflare-warp
     dconf2nix            # dconf (gnome) files to nix converter
     discord              # chat client for dev stuff
     dmenu                # application launcher
     docker-compose       # docker manager
     dive                 # explore docker layers
     duf                  # disk usage/free utility
+    eog                  # image viewer
+    evince               # pdf reader
+    gnome-calendar       # calendar
+    nautilus             # file manager
     eza                  # a better `ls`
     fd                   # "find" for files
     gimp                 # gnu image manipulation program
@@ -27,11 +32,12 @@ let
     krita                # a free and open source painting application
     libreoffice          # office suite
     libnotify            # notify-send command
-    betterlockscreen      # fast lockscreen based on i3lock
+    logseq               # for organizing and sharing your personal knowledge base
+    betterlockscreen     # fast lockscreen based on i3lock
     ncdu                 # disk space info (a better du)
     neofetch             # command-line system information
     nix-doc              # nix documentation search tool
-    nix-index            # files database for nixpkgs
+    nix-index            # files database for nixpkgs+
     nixos-generators     # nix tool to generate isos
     nyancat              # the famous rainbow cat!
     manix                # documentation searcher for nix
@@ -45,24 +51,25 @@ let
     pulsemixer           # pulseaudio mixer
     qbittorrent          # bittorrent client
     ripgrep              # fast grep
-    rnix-lsp             # nix lsp server
     signal-desktop       # encrypted instant messaging service
     simplescreenrecorder # self-explanatory
     slack                # messaging client
     spotify              # music source
     stremio              # torrent streaming
+    syncthing            # open Source Continuous File Synchronization
     tdesktop             # telegram messaging client
     tldr                 # summary of a man page
     tree                 # display files in a tree view
     vlc                  # media player
     xclip                # clipboard support (also for neovim)
+    whatsapp-for-linux   # messaging app
     yad                  # yet another dialog - fork of zenity
     zulip                # desktop client for zulip chat
   ];
 
   devPkgs = with pkgs; [
     cargo
-    dotnet-sdk_7
+    dotnet-sdk
     elixir
     fsharp
     ghc
@@ -73,6 +80,12 @@ let
     rustc
     stack
     vscode
+    clojure
+    openjdk
+    leiningen
+    babashka
+    clj-kondo
+    zprint
   ];
 
   gitPkgs = with pkgs.gitAndTools; [
@@ -80,13 +93,6 @@ let
     git-crypt     # git files encryption
     hub           # github command-line client
     tig           # diff and commit view
-  ];
-
-  gnomePkgs = with pkgs.gnome3; [
-    eog            # image viewer
-    evince         # pdf reader
-    gnome-calendar # calendar
-    nautilus       # file manager
   ];
 
   polybarPkgs = with pkgs; [
@@ -114,6 +120,9 @@ in
     packageOverrides = pkgs: {
       nur = import (import pinned/nur.nix) { inherit pkgs; };
     };
+    permittedInsecurePackages = [
+      "electron-27.3.11"
+    ];
   };
 
   nixpkgs.overlays = [
@@ -142,7 +151,6 @@ in
       defaultPkgs
       devPkgs
       gitPkgs
-      gnomePkgs
       polybarPkgs
       xmonadPkgs
     ];

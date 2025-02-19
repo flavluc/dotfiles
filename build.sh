@@ -10,9 +10,8 @@ create_config() {
   touch $HOME/.config/polybar/logs/bottom.log
   touch $HOME/.config/polybar/logs/top.log
 
+  sudo rm -rf /etc/nixos/*
   sudo cp -r system/* /etc/nixos
-  sudo cp -r system/* /etc/nixos
-  sudo rm -rf /etc/nixos/home
   sudo cp -r home /etc/nixos/home
 }
 
@@ -28,13 +27,18 @@ xbacklight_permissions(){
   sudo chmod 0664 /sys/class/backlight/intel_backlight/brightness
 }
 
+# TODO: create build home script for first install
+
 build_system() {
   create_config
 
   sudo nix-channel --add https://nixos.org/channels/nixos-unstable nixos
   sudo nix-channel --add https://github.com/nix-community/home-manager/archive/master.tar.gz home-manager
+  sudo nix-channel --update
 
-  sudo nixos-rebuild switch --upgrade
+  sudo nixos-rebuild switch
 }
 
+
+# TODO: fix hardware-configuration.nix usage
 build_system
