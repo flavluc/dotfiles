@@ -6,26 +6,27 @@
     package = pkgs.emacs;  # Using the default Emacs package
     extraPackages = (
       epkgs: with epkgs; [
-        use-package          # Package manager
-        which-key            # Keybinding helper
-        all-the-icons        # Icons package for Emacs
-        doom-modeline        # Modern modeline
-        modus-themes         # Themes
-        rainbow-delimiters   # Parentheses highlighting
-        counsel              # Navigation & search
-        ivy-rich             # Adds extra details to Ivy menus
-        helpful              # Commands descriptions
-        projectile           # Project management
-        counsel-projectile   # Project management Counsel integration
-        magit                # Git integration
-        company              # Autocompletion
-        flycheck             # Syntax checking
-        clojure-mode         # Clojure support
-        paredit              # Lisp structural editing
-        cider                # Clojure REPL support
+	deadgrep
 	org
 	org-bullets
-	visual-fill-column
+	treemacs
+        all-the-icons        # Icons package for Emacs
+        cider                # Clojure REPL support
+        clojure-mode         # Clojure support
+        company              # Autocompletion
+        counsel              # Navigation & search
+        counsel-projectile   # Project management Counsel integration
+        doom-modeline        # Modern modeline
+        flycheck             # Syntax checking
+        helpful              # Commands descriptions
+        ivy-rich             # Adds extra details to Ivy menus
+        magit                # Git integration
+        modus-themes         # Themes
+        paredit              # Lisp structural editing
+        projectile           # Project management
+        rainbow-delimiters   # Parentheses highlighting
+        use-package          # Package manager
+        which-key            # Keybinding helper
       ]
     );
   };

@@ -21,6 +21,7 @@ in
 {
   programs.git = {
     enable = true;
+    lfs.enable = true;
     aliases = {
       amend = "commit --amend -m";
       fixup = "!f(){ git reset --soft HEAD~\${1} && git commit --amend -C HEAD; };f";

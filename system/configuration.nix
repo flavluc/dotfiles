@@ -95,6 +95,7 @@ in
   };
 
   home-manager.users.fuyu.imports = [ ./home/home.nix ];
+  home-manager.backupFileExtension = "backup";
 
   nixpkgs.config.allowUnfree = true;
 

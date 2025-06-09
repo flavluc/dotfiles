@@ -29,6 +29,9 @@
 ;; M-x all-the-icons-install-fonts
 (use-package all-the-icons)
 
+;; Set default font size
+(set-face-attribute 'default nil :family "Source Code Pro" :height 120)
+
 ;; Distribute window evenly
 (add-hook 'window-configuration-change-hook #'balance-windows)
 
@@ -102,9 +105,14 @@
 (use-package counsel-projectile
   :config (counsel-projectile-mode))
 
+(use-package deadgrep
+  :ensure t
+  :bind (("C-c r" . deadgrep)))
+
 ;; MAGIT: Git Integration
 (use-package magit
-  :bind ("C-x g" . magit-status))
+  :bind ("C-x g" . magit-status)
+  :custom (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
 ;; COMPANY: Autocompletion
 (use-package company
@@ -121,51 +129,67 @@
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)   ;; Show line numbers in programming modes
 
 ;; CLOJURE SETUP
-(use-package clojure-mode)
 
-(use-package paredit
-  :hook (clojure-mode . paredit-mode))
+(defun fuyu/align-whole-buffer ()
+  "Align entire Clojure buffer using clojure-align, then format with cider-format-buffer."
+  (when (derived-mode-p 'clojure-mode)
+    (save-excursion
+      (mark-whole-buffer)
+      (clojure-align (region-beginning) (region-end)))
+    (when (fboundp 'cider-format-buffer)
+      (cider-format-buffer))))
+
+(defun fuyu/add-align-on-save ()
+  "Add buffer-local after-save-hook to align the Clojure buffer."
+  (add-hook 'after-save-hook #'fuyu/align-whole-buffer nil t))
+
+(defun fuyu/clojure-align-changed-files ()
+  "Align all modified .clj files compared to master using clojure-align."
+  (interactive)
+  (dolist (file (seq-filter (lambda (f) (string-suffix-p ".clj" f))
+                            (magit-git-lines "diff" "--name-only" "master...HEAD")))
+    (let ((full-path (expand-file-name file (magit-toplevel))))
+      (when (file-exists-p full-path)
+        (find-file full-path)
+        (message "Aligning %s" full-path)
+        (mark-whole-buffer)
+        (clojure-align (region-beginning) (region-end))
+        (save-buffer)))))
+
+(use-package clojure-mode
+  :ensure t
+  :hook (clojure-mode . fuyu/add-align-on-save))
 
 (use-package cider
-  :hook (clojure-mode . cider-mode))
+  :ensure t
+  :hook (clojure-mode . cider-mode)
+  :config
+  (setq cider-repl-display-help-banner nil
+        cider-save-file-on-load     t))
 
 (use-package rainbow-delimiters
+  :ensure t
   :hook (clojure-mode . rainbow-delimiters-mode))
 
-(use-package magit
-  :custom
-  (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
-;; ORG-MODE:
-(defun efs/org-mode-setup ()
+;; ORG-MODE
+(defun fuyu/org-mode-setup ()
   (org-indent-mode)
   (variable-pitch-mode 1)
   (visual-line-mode 1))
 
-(defun efs/org-font-setup ()
-  ;; Replace list hyphen with dot
-  (font-lock-add-keywords 'org-mode
-                          '(("^ *\\([-]\\) "
-                             (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
-
- (defun fuyu/org-mode-visual-fill ()
-  (setq visual-fill-column-width 100
-        visual-fill-column-center-text t)
-  (visual-fill-column-mode 1))
-  
-(use-package org
-  :hook (org-mode . fuyu/org-mode-setup)
-  :config
-  (setq org-ellipsis " ▾")
-  (fuyu/org-font-setup))
+(use-package org)
 
 (use-package org-bullets
   :after org
-  :hook (org-mode . org-bullets-mode)
-  :custom
-  (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
+  :hook (org-mode . org-bullets-mode))
 
 
-(use-package visual-fill-column
-  :hook (org-mode . fuyu/org-mode-visual-fill))
+;; TREEMACS
+(use-package treemacs
+  :ensure t
+  :config
+  (setq treemacs-follow-mode t)        ;; Follow the file in the tree
+  (setq treemacs-filewatch-mode t))    ;; Enable file watching
 
+(global-set-key (kbd "C-x t") 'treemacs)

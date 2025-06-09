@@ -2,17 +2,21 @@
 
 let
   defaultPkgs = with pkgs; [
+    ffmpeg
     anki-bin             # space repetition system
     any-nix-shell        # fish support for nix shell
     arandr               # simple GUI for xrandr
     asciinema            # record the terminal
     audacious            # simple music player
+    awscli2		           # unified tool to manage your AWS services
     betterdiscordctl     # a better discord
+    betterlockscreen     # fast lockscreen based on i3lock
     bitwarden-cli        # command-line client for the password manager
     bottom               # alternative to htop & ytop
     cachix               # nix caching
     calibre              # e-book reader
     cloudflare-warp
+    dbeaver-bin		       # universal SQL Client for developers
     dconf2nix            # dconf (gnome) files to nix converter
     discord              # chat client for dev stuff
     dmenu                # application launcher
@@ -29,11 +33,12 @@ let
     git-crypt            # encryption/decryption for files in a git repo
     gnupg                # free-software replacement for Symantec's PGP
     hyperfine            # command-line benchmarking tool
+    insomnia             # API client for GraphQL, REST, WebSockets, SSE and gRPC
     krita                # a free and open source painting application
     libreoffice          # office suite
     libnotify            # notify-send command
     logseq               # for organizing and sharing your personal knowledge base
-    betterlockscreen     # fast lockscreen based on i3lock
+    mongodb-compass      # GUI for MongoDB
     ncdu                 # disk space info (a better du)
     neofetch             # command-line system information
     nix-doc              # nix documentation search tool
@@ -81,6 +86,7 @@ let
     stack
     vscode
     clojure
+    rlwrap
     openjdk
     leiningen
     babashka
@@ -121,7 +127,7 @@ in
       nur = import (import pinned/nur.nix) { inherit pkgs; };
     };
     permittedInsecurePackages = [
-      "electron-27.3.11"
+      "electron-32.3.3"
     ];
   };
 
