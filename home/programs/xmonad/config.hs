@@ -184,7 +184,7 @@ myPolybarLogHook dbus = dynamicLogWithPP (polybarHook dbus)
 -- Key bindings. Add, modify or remove key bindings here.
 --
 
-myTerminal   = "nixGL alacritty"
+myTerminal   = "alacritty"
 myEditor     = "emacs"
 appLauncher  = "rofi -modi drun,ssh,window -show drun -show-icons"
 screenLocker = "betterlockscreen -l dim"

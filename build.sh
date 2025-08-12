@@ -16,12 +16,6 @@ create_config() {
   sudo cp -r home /etc/nixos/home
 }
 
-install_nixGL(){
-  echo "Installing nixGL..."
-  nix-channel --add https://github.com/guibou/nixGL/archive/main.tar.gz nixgl && nix-channel --update
-  nix-env -iA nixgl.auto.nixGLDefault
-}
-
 # https://github.com/NixOS/nixpkgs/issues/59927
 xbacklight_permissions(){
   sudo chown root:video /sys/class/backlight/intel_backlight/brightness
@@ -38,6 +32,5 @@ build_system() {
 
   sudo nixos-rebuild switch
 }
-
 
 build_system
