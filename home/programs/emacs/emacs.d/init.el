@@ -130,7 +130,7 @@
 
 ;; CLOJURE SETUP
 
-(defun fuyu/align-whole-buffer ()
+(defun flavio/align-whole-buffer ()
   "Align entire Clojure buffer using clojure-align, then format with cider-format-buffer."
   (when (derived-mode-p 'clojure-mode)
     (save-excursion
@@ -139,11 +139,11 @@
     (when (fboundp 'cider-format-buffer)
       (cider-format-buffer))))
 
-(defun fuyu/add-align-on-save ()
+(defun flavio/add-align-on-save ()
   "Add buffer-local after-save-hook to align the Clojure buffer."
-  (add-hook 'after-save-hook #'fuyu/align-whole-buffer nil t))
+  (add-hook 'after-save-hook #'flavio/align-whole-buffer nil t))
 
-(defun fuyu/clojure-align-changed-files ()
+(defun flavio/clojure-align-changed-files ()
   "Align all modified .clj files compared to master using clojure-align."
   (interactive)
   (dolist (file (seq-filter (lambda (f) (string-suffix-p ".clj" f))
@@ -158,7 +158,7 @@
 
 (use-package clojure-mode
   :ensure t
-  :hook (clojure-mode . fuyu/add-align-on-save))
+  :hook (clojure-mode . flavio/add-align-on-save))
 
 (use-package cider
   :ensure t
@@ -173,7 +173,7 @@
 
 
 ;; ORG-MODE
-(defun fuyu/org-mode-setup ()
+(defun flavio/org-mode-setup ()
   (org-indent-mode)
   (variable-pitch-mode 1)
   (visual-line-mode 1))

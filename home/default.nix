@@ -119,39 +119,11 @@ let
 
 in
 {
-  programs.home-manager.enable = true;
-
-  nixpkgs.config = {
-    allowUnfree = true;
-    packageOverrides = pkgs: {
-      nur = import (import pinned/nur.nix) { inherit pkgs; };
-    };
-    permittedInsecurePackages = [
-      "electron-32.3.3"
-    ];
-  };
-
-  nixpkgs.overlays = [
-    (import ./overlays/discord)
-  ];
-
-  imports = (import ./programs) ++ (import ./services) ++ [(import ./themes)];
-
-  xdg = {
-    enable = true;
-    configFile."networkmanager-dmenu/config.ini".text = ''
-      [dmenu]
-      dmenu_command = rofi
-      rofi_highlight = True
-      [editor]
-      gui_if_available = True
-    '';
-  };
 
   home = {
-    username      = "fuyu";
-    homeDirectory = "/home/fuyu";
-    stateVersion  = "21.03";
+    username      = "flavio";
+    homeDirectory = "/home/flavio";
+    stateVersion  = "25.05";
 
     packages = builtins.concatLists [
       defaultPkgs
@@ -173,11 +145,31 @@ in
     };
   };
 
+  imports = (import ./programs) ++ (import ./services) ++ [(import ./themes)];
+  
+  nixpkgs.config = {
+    allowUnfree = true;
+    packageOverrides = pkgs: {
+      nur = import (import pinned/nur.nix) { inherit pkgs; };
+    };
+    permittedInsecurePackages = [
+      "electron-32.3.3"
+    ];
+  };
+
+  xdg = {
+    enable = true;
+    configFile."networkmanager-dmenu/config.ini".text = ''
+      [dmenu]
+      dmenu_command = rofi
+      rofi_highlight = True
+      [editor]
+      gui_if_available = True
+    '';
+  };  
+
   # restart services on change
   systemd.user.startServices = "sd-switch";
-
-  # notifications about home-manager news
-  news.display = "silent";
 
   programs = {
     bat.enable = true;
