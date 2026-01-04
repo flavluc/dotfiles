@@ -1,36 +1,21 @@
-#! /usr/bin/env bash
+#!/usr/bin/env bash
+set -e # Exit on error
 
-# Shows the output of every command
-set +x
+# Get the directory where this script is located
+SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
 
-create_config() {
-  echo "Creating config files..."
-
-  mkdir -p $HOME/.config/polybar/logs
-  touch $HOME/.config/polybar/logs/bottom.log
-  touch $HOME/.config/polybar/logs/top.log
-
-  sudo rm /etc/nixos/configuration.nix
-  sudo cp configuration.nix /etc/nixos/configuration.nix
-  sudo rm -rf /etc/nixos/home
-  sudo cp -r home /etc/nixos/home
-}
-
-# https://github.com/NixOS/nixpkgs/issues/59927
-xbacklight_permissions(){
-  sudo chown root:video /sys/class/backlight/intel_backlight/brightness
-  sudo chmod 0664 /sys/class/backlight/intel_backlight/brightness
+create_folders() {
+  echo "Preparing logs..."
+  mkdir -p "$HOME/.config/polybar/logs"
+  touch "$HOME/.config/polybar/logs/bottom.log" "$HOME/.config/polybar/logs/top.log"
 }
 
 build_system() {
-  create_config
+  create_folders
   
-  # how to update to unstable?
-  #sudo nix-channel --add https://nixos.org/channels/nixos-unstable nixos
-  #sudo nix-channel --add https://github.com/nix-community/home-manager/archive/master.tar.gz home-manager
-  #sudo nix-channel --update
-
-  sudo nixos-rebuild switch
+  echo "Building NixOS Flake..."
+  # Replace 'laptop' with your actual hostname defined in flake.nix
+  sudo nixos-rebuild switch --flake "$SCRIPT_DIR#laptop"
 }
 
 build_system

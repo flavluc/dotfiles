@@ -82,7 +82,7 @@ in
         id = 0;
         settings = settings;
         userChrome = userChrome;
-        extensions = with pkgs.nur.repos.rycee.firefox-addons; [
+        extensions.packages = with pkgs.nur.repos.rycee.firefox-addons; [
           # bitwarden @TODO fix this after updating nur
           darkreader
           i-dont-care-about-cookies

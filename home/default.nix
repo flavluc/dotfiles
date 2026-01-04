@@ -152,12 +152,6 @@ in
   
   nixpkgs.config = {
     allowUnfree = true;
-    packageOverrides = pkgs: {
-      nur = import (import pinned/nur.nix) { inherit pkgs; };
-    };
-    permittedInsecurePackages = [
-      "electron-32.3.3"
-    ];
   };
 
   xdg = {
