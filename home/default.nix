@@ -10,7 +10,6 @@ let
     audacious            # simple music player
     awscli2		           # unified tool to manage your AWS services
     betterdiscordctl     # a better discord
-    betterlockscreen     # fast lockscreen based on i3lock
     bitwarden-cli        # command-line client for the password manager
     bottom               # alternative to htop & ytop
     cachix               # nix caching
@@ -64,6 +63,7 @@ let
     syncthing            # open Source Continuous File Synchronization
     tdesktop             # telegram messaging client
     tldr                 # summary of a man page
+    todoist-electron     # task manager
     tree                 # display files in a tree view
     vlc                  # media player
     xclip                # clipboard support (also for neovim)
@@ -73,24 +73,27 @@ let
   ];
 
   devPkgs = with pkgs; [
+    babashka
     cargo
+    clj-kondo
+    clojure
     dotnet-sdk
     elixir
     fsharp
-    ghc
     gcc
+    ghc
+    leiningen
     nodejs
+    nodePackages.ts-node
+    nodePackages.typescript
     ocaml
+    openjdk
     python3
+    rlwrap
     rustc
     stack
+    turbo
     vscode
-    clojure
-    rlwrap
-    openjdk
-    leiningen
-    babashka
-    clj-kondo
     zprint
   ];
 
@@ -166,6 +169,17 @@ in
       [editor]
       gui_if_available = True
     '';
+
+    mimeApps = {
+      enable = true;
+      defaultApplications = {
+        "text/html"              = [ "firefox.desktop" ];
+        "x-scheme-handler/http"  = [ "firefox.desktop" ];
+        "x-scheme-handler/https" = [ "firefox.desktop" ];
+        "x-scheme-handler/about" = [ "firefox.desktop" ];
+        "x-scheme-handler/unknown" = [ "firefox.desktop" ];
+      };
+    };
   };  
 
   # restart services on change
@@ -222,6 +236,10 @@ in
   services = {
     flameshot.enable = true;
 
+    syncthing = {
+      enable = true;
+    };
+    
     udiskie = {
       enable = true;
       tray = "always";
@@ -230,10 +248,9 @@ in
     screen-locker = {
       enable = true;
       inactiveInterval = 30;
-      lockCmd = "${pkgs.betterlockscreen}/bin/betterlockscreen -l dim";
-      xautolock.extraOptions = [
-        "Xautolock.killer: systemctl suspend"
-      ];
+      lockCmd = "${pkgs.i3lock}/bin/i3lock -c 000000";
+      xautolock.extraOptions = [ "Xautolock.killer: systemctl suspend" ];
     };
+
   };
 }

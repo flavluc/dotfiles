@@ -187,7 +187,7 @@ myPolybarLogHook dbus = dynamicLogWithPP (polybarHook dbus)
 myTerminal   = "alacritty"
 myEditor     = "emacs"
 appLauncher  = "rofi -modi drun,ssh,window -show drun -show-icons"
-screenLocker = "betterlockscreen -l dim"
+screenLocker = "i3lock -c 000000"
 playerctl c  = "playerctl --player=spotify,%any " <> c
 
 showKeybindings :: [((KeyMask, KeySym), NamedAction)] -> NamedAction

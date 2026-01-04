@@ -156,6 +156,9 @@
         (clojure-align (region-beginning) (region-end))
         (save-buffer)))))
 
+(use-package nix-mode
+  :mode "\\.nix\\'")
+
 (use-package clojure-mode
   :ensure t
   :hook (clojure-mode . flavio/add-align-on-save))
@@ -178,12 +181,27 @@
   (variable-pitch-mode 1)
   (visual-line-mode 1))
 
-(use-package org)
+(use-package org
+  :hook (org-mode . flavio/org-mode-setup)
+  :config
+  ;; Enable org-tempo for <s TAB etc.
+  (require 'org-tempo))
 
 (use-package org-bullets
   :after org
   :hook (org-mode . org-bullets-mode))
 
+;; ORG-BABEL CLOJURE
+(use-package ob-clojure
+  :ensure nil
+  :after org
+  :config
+  (setq org-babel-clojure-backend 'cider))
+
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((emacs-lisp . t)
+   (clojure     . t)))
 
 ;; TREEMACS
 (use-package treemacs

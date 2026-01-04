@@ -18,6 +18,9 @@ in
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  # Re-probe display outputs
+  boot.kernelParams = [ "drm_kms_helper.poll=Y" ];
+
   # Networking.
   networking.hostName = "nixos";
   networking.networkmanager.enable = true;
@@ -84,6 +87,16 @@ in
     #media-session.enable = true;
   };
 
+  # Mongo DB
+  services.mongodb.enable = true;
+
+  # Lock screen
+  security.pam.services.i3lock = {};
+  programs.i3lock = {
+    enable = true;
+    package = pkgs.i3lock-color;
+  };
+
   # Docker.
   virtualisation.docker.enable = true;
 
@@ -119,6 +132,13 @@ in
 
   home-manager.users.flavio = import ./home/default.nix;
   home-manager.backupFileExtension = "backup";
+
+  # hard-drive filesystem
+  fileSystems."/mnt/hdd" = {
+    device = "/dev/disk/by-uuid/F262BEB362BE7C43";
+    fsType = "ntfs";
+    options = [ "uid=1000" "gid=100" "umask=022" ];
+  };
 
   # Install firefox.
   programs.firefox.enable = true;
@@ -171,6 +191,14 @@ in
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
+  
+  # syncthing ports
+  networking.firewall.allowedTCPPorts = [ 22000 8384 ];
+  networking.firewall.allowedUDPPorts = [ 21027 ];
+
+  # phone access
+  services.gvfs.enable = true;      # needed for GNOME/KDE/Nautilus/Dolphin to mount phones
+  services.udisks2.enable = true;   # user-friendly mounting service
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

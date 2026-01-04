@@ -6,10 +6,10 @@
     package = pkgs.emacs;  # Using the default Emacs package
     extraPackages = (
       epkgs: with epkgs; [
-	deadgrep
-	org
-	org-bullets
-	treemacs
+        deadgrep
+        org
+        org-bullets
+        treemacs
         all-the-icons        # Icons package for Emacs
         cider                # Clojure REPL support
         clojure-mode         # Clojure support
@@ -20,6 +20,7 @@
         flycheck             # Syntax checking
         helpful              # Commands descriptions
         ivy-rich             # Adds extra details to Ivy menus
+        nix-mode             # Nix support
         magit                # Git integration
         modus-themes         # Themes
         paredit              # Lisp structural editing
