@@ -145,7 +145,10 @@
     vim
     wget
     firefox
+    blueman
   ];
+
+  hardware.bluetooth.enable = true;
 
   # Syncthing ports
   networking.firewall.allowedTCPPorts = [ 22000 8384 ];

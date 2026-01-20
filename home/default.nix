@@ -73,6 +73,7 @@ let
   ];
 
   devPkgs = with pkgs; [
+    antigravity
     babashka
     cargo
     clj-kondo
