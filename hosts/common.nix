@@ -12,6 +12,10 @@
   # Networking
   networking.networkmanager.enable = true;
 
+  networking.hosts = {
+    "127.0.0.1" = [ "mongodb" ];
+  };
+
   # Set your time zone
   time.timeZone = "America/Sao_Paulo";
 
@@ -52,6 +56,18 @@
     variant = "";
   };
 
+  # xinput --list
+  # xinput --set-prop 11 "libinput Accel Speed" -0.7
+  services.libinput = {
+    enable = true;
+    mouse = {
+      # Speed range is -1.0 to 1.0 (0.0 is default)
+      accelSpeed = "0.5"; 
+      # Use "flat" for consistent speed or "adaptive" for acceleration
+      accelProfile = "flat"; 
+    };
+  };
+
   # Configure console keymap
   console.keyMap = "br-abnt2";
 
@@ -70,6 +86,7 @@
 
   # MongoDB
   services.mongodb.enable = true;
+
 
   # Lock screen
   security.pam.services.i3lock = {};

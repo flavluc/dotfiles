@@ -51,6 +51,7 @@ let
     pciutils             # util commands for pci info
     pinentry             # dialog programs for GnuPG
     playerctl            # music player controller
+    postman              # API development environment
     prettyping           # a nicer ping
     pulsemixer           # pulseaudio mixer
     qbittorrent          # bittorrent client
@@ -73,7 +74,6 @@ let
   ];
 
   devPkgs = with pkgs; [
-    antigravity
     babashka
     cargo
     clj-kondo
