@@ -8,7 +8,6 @@ let
     arandr               # simple GUI for xrandr
     asciinema            # record the terminal
     audacious            # simple music player
-    awscli2		           # unified tool to manage your AWS services
     betterdiscordctl     # a better discord
     bitwarden-cli        # command-line client for the password manager
     bottom               # alternative to htop & ytop
@@ -24,12 +23,15 @@ let
     duf                  # disk usage/free utility
     eog                  # image viewer
     evince               # pdf reader
+    foliate              # ebup reader
     gnome-calendar       # calendar
     nautilus             # file manager
     eza                  # a better `ls`
     fd                   # "find" for files
     gimp                 # gnu image manipulation program
     git-crypt            # encryption/decryption for files in a git repo
+    google-chrome
+    gh
     gnupg                # free-software replacement for Symantec's PGP
     hyperfine            # command-line benchmarking tool
     insomnia             # API client for GraphQL, REST, WebSockets, SSE and gRPC
@@ -74,6 +76,7 @@ let
   ];
 
   devPkgs = with pkgs; [
+    awscli2		           # unified tool to manage your AWS services
     babashka
     cargo
     clj-kondo
@@ -93,8 +96,10 @@ let
     rlwrap
     rustc
     stack
+    terraform
     turbo
     vscode
+    claude-code
     zprint
   ];
 

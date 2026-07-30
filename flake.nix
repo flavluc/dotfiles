@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     
     home-manager = {
       url = "github:nix-community/home-manager/release-25.05";
@@ -13,13 +14,26 @@
     nur.url = "github:nix-community/NUR";
   };
 
-  outputs = { self, nixpkgs, home-manager, nur, ... }: {
+  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, nur, ... }: 
+  let
+    pkgs-unstable = import nixpkgs-unstable {
+      system = "x86_64-linux";
+      config.allowUnfree = true;
+    };
+  in {
     nixosConfigurations = {
       desktop = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
           # 2. Add the NUR overlay to system modules
-          { nixpkgs.overlays = [ nur.overlays.default ]; }
+          { 
+            nixpkgs.overlays = [ 
+              nur.overlays.default
+              (final: prev: {
+                claude-code = pkgs-unstable.claude-code;
+              })
+            ]; 
+          }
           ./hosts/desktop/configuration.nix
           home-manager.nixosModules.home-manager
           {
@@ -35,7 +49,14 @@
         system = "x86_64-linux";
         modules = [
           # 2. Add the NUR overlay to system modules
-          { nixpkgs.overlays = [ nur.overlays.default ]; }
+          { 
+            nixpkgs.overlays = [ 
+              nur.overlays.default
+              (final: prev: {
+                claude-code = pkgs-unstable.claude-code;
+              })
+            ]; 
+          }
           ./hosts/laptop/configuration.nix
           home-manager.nixosModules.home-manager
           {
