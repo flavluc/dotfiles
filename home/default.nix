@@ -69,7 +69,6 @@ let
     tree                 # display files in a tree view
     vlc                  # media player
     xclip                # clipboard support (also for neovim)
-    karere               # whatsapp client (whatsapp-for-linux archived upstream)
     yad                  # yet another dialog - fork of zenity
     zulip                # desktop client for zulip chat
   ];
