@@ -61,6 +61,7 @@ in
     config = ./config.ini;
     extraConfig = bars + colors + mods1 + mods2 + customMods;
     script = ''
+      mkdir -p ${config.xdg.configHome}/polybar/logs
       polybar top 2>${config.xdg.configHome}/polybar/logs/top.log & disown
       polybar bottom 2>${config.xdg.configHome}/polybar/logs/bottom.log & disown
     '';

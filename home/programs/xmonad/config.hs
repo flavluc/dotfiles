@@ -189,6 +189,7 @@ myEditor     = "emacs"
 appLauncher  = "rofi -modi drun,ssh,window -show drun -show-icons"
 screenLocker = "i3lock -c 000000"
 playerctl c  = "playerctl --player=spotify,%any " <> c
+wpctl c      = "wpctl " <> c
 
 showKeybindings :: [((KeyMask, KeySym), NamedAction)] -> NamedAction
 showKeybindings x = addName "Show Keybindings" . io $
@@ -196,17 +197,18 @@ showKeybindings x = addName "Show Keybindings" . io $
 
 myKeys conf@XConfig {XMonad.modMask = modm} =
   keySet "Audio"
-    [ key "Mute"          (0, xF86XK_AudioMute              ) $ spawn "amixer -q set Master toggle"
-    , key "Lower volume"  (0, xF86XK_AudioLowerVolume       ) $ spawn "amixer -q set Master 5%-"
-    , key "Raise volume"  (0, xF86XK_AudioRaiseVolume       ) $ spawn "amixer -q set Master 5%+"
+    [ key "Mute"          (0, xF86XK_AudioMute              ) $ spawn $ wpctl "set-mute @DEFAULT_AUDIO_SINK@ toggle"
+    , key "Mic mute"      (0, xF86XK_AudioMicMute           ) $ spawn $ wpctl "set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
+    , key "Lower volume"  (0, xF86XK_AudioLowerVolume       ) $ spawn $ wpctl "set-volume @DEFAULT_AUDIO_SINK@ 5%-"
+    , key "Raise volume"  (0, xF86XK_AudioRaiseVolume       ) $ spawn $ wpctl "set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+"
     , key "Play / Pause"  (0, xF86XK_AudioPlay              ) $ spawn $ playerctl "play-pause"
     , key "Stop"          (0, xF86XK_AudioStop              ) $ spawn $ playerctl "stop"
     , key "Previous"      (0, xF86XK_AudioPrev              ) $ spawn $ playerctl "previous"
     , key "Next"          (0, xF86XK_AudioNext              ) $ spawn $ playerctl "next"
     ] ^++^
   keySet "Display"
-    [ key "Light Inc"     (0, xF86XK_MonBrightnessUp         ) $ spawn "xbacklight -inc 4"
-    , key "Light Dec"     (0, xF86XK_MonBrightnessDown       ) $ spawn "xbacklight -dec 4"
+    [ key "Light Inc"     (0, xF86XK_MonBrightnessUp         ) $ spawn "brightnessctl set 5%+"
+    , key "Light Dec"     (0, xF86XK_MonBrightnessDown       ) $ spawn "brightnessctl set 5%-"
     ] ^++^
   keySet "Launchers"
     [ key "Terminal"      (modm               , xK_Return  ) $ spawn (XMonad.terminal conf)

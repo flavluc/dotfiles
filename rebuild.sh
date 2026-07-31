@@ -83,6 +83,61 @@ if [ ! -f "flake.lock" ]; then
     nix flake update
 fi
 
+# Preflight: catch configs that would produce an unbootable or downgraded system.
+# Only meaningful when the target host IS the machine we're running on.
+preflight() {
+    local host=$1
+    local problems=0
+
+    if [ "$host" != "$(hostname)" ]; then
+        echo -e "${YELLOW}Preflight skipped:${NC} building '$host' from '$(hostname)'"
+        return 0
+    fi
+
+    # 1. Does the committed hardware config still describe THIS machine's disks?
+    #    A stale hardware-configuration.nix (wrong UUIDs, missing LUKS) builds
+    #    fine and then drops the machine into emergency mode on boot.
+    local hw="hosts/$host/hardware-configuration.nix"
+    if [ -f "$hw" ]; then
+        local live repo
+        live=$(nixos-generate-config --show-hardware-config 2>/dev/null \
+               | grep -oE 'by-uuid/[A-Za-z0-9-]+|/dev/mapper/[A-Za-z0-9_-]+' | sort -u)
+        repo=$(grep -oE 'by-uuid/[A-Za-z0-9-]+|/dev/mapper/[A-Za-z0-9_-]+' "$hw" | sort -u)
+        if [ -n "$live" ] && [ "$live" != "$repo" ]; then
+            echo -e "${RED}PREFLIGHT:${NC} $hw does not match this machine's disks."
+            echo -e "${YELLOW}  this machine:${NC} $(echo "$live" | tr '\n' ' ')"
+            echo -e "${YELLOW}  the repo says:${NC} $(echo "$repo" | tr '\n' ' ')"
+            echo -e "  Regenerate with: nixos-generate-config --show-hardware-config > $hw"
+            problems=1
+        fi
+    fi
+
+    # 2. Would this switch move the machine to an older NixOS release?
+    #    A stale flake.lock silently downgrades the whole OS, kernel included.
+    local target running
+    target=$(nix eval --raw ".#nixosConfigurations.$host.config.system.nixos.release" 2>/dev/null)
+    running=$(nixos-version 2>/dev/null | grep -oE '^[0-9]+\.[0-9]+')
+    if [ -n "$target" ] && [ -n "$running" ] && [ "$target" != "$running" ]; then
+        echo -e "${RED}PREFLIGHT:${NC} release change: running ${running} -> building ${target}"
+        if [ "$(printf '%s\n%s\n' "$target" "$running" | sort -V | head -1)" = "$target" ]; then
+            echo -e "${RED}  This is a DOWNGRADE.${NC} Check nixpkgs branch in flake.nix and flake.lock."
+        fi
+        problems=1
+    fi
+
+    if [ "$problems" -ne 0 ]; then
+        echo
+        read -r -p "Continue anyway? [y/N] " reply
+        [[ "$reply" =~ ^[Yy]$ ]] || { echo -e "${RED}Aborted.${NC}"; exit 1; }
+    else
+        echo -e "${GREEN}✓ Preflight passed${NC} (hardware config and release match this machine)"
+    fi
+}
+
+case "$COMMAND" in
+    switch|test|boot) preflight "$HOST" ;;
+esac
+
 # Execute the appropriate nixos-rebuild command
 case "$COMMAND" in
     switch)

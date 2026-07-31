@@ -1,5 +1,5 @@
 # Common configuration shared between all hosts
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 {
   # Bootloader
@@ -38,8 +38,9 @@
   services.xserver.enable = true;
 
   # Enable the GNOME Desktop Environment
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
+  # (moved out of services.xserver.* in 26.05)
+  services.displayManager.gdm.enable = true;
+  services.desktopManager.gnome.enable = true;
 
   # Add an X11 session that runs the user's ~/.xsession (from Home Manager)
   services.xserver.displayManager.session = [
@@ -51,9 +52,11 @@
   ];
 
   # Configure keymap in X11
+  # NOTE: hosts override the variant. ThinkPad ABNT2 keyboards wire the "/ ?"
+  # key to the <RCTL> keycode, so the laptop needs the "thinkpad" variant.
   services.xserver.xkb = {
     layout = "br";
-    variant = "";
+    variant = lib.mkDefault "";
   };
 
   # xinput --list
@@ -84,9 +87,6 @@
     alsa.support32Bit = true;
     pulse.enable = true;
   };
-
-  # MongoDB
-  services.mongodb.enable = true;
 
 
   # Lock screen
@@ -122,7 +122,7 @@
   users.users.flavio = {
     isNormalUser = true;
     description = "flavio";
-    extraGroups = [ "wheel" "networkmanager" "docker" "video" ];
+    extraGroups = [ "wheel" "networkmanager" "docker" "video" "input" ];
     packages = with pkgs; [];
   };
 
@@ -130,8 +130,7 @@
   programs.firefox.enable = true;
 
    nixpkgs.config.permittedInsecurePackages = [
-              "mongodb-7.0.25"
-              "electron-32.3.3" # Keep your other packages
+              "electron-39.8.10" # Keep your other packages
             ];
 
   # Allow unfree packages
@@ -164,7 +163,12 @@
     wget
     firefox
     blueman
+    brightnessctl
   ];
+
+  # Grant the video/input groups write access to backlight and LED brightness,
+  # so brightnessctl works without root (screen + keyboard backlight).
+  services.udev.packages = [ pkgs.brightnessctl ];
 
   hardware.bluetooth.enable = true;
 

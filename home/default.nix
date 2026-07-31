@@ -41,7 +41,7 @@ let
     logseq               # for organizing and sharing your personal knowledge base
     mongodb-compass      # GUI for MongoDB
     ncdu                 # disk space info (a better du)
-    neofetch             # command-line system information
+    fastfetch            # command-line system information (replaces neofetch)
     nix-doc              # nix documentation search tool
     nix-index            # files database for nixpkgs+
     nixos-generators     # nix tool to generate isos
@@ -51,7 +51,7 @@ let
     paprefs              # pulseaudio preferences
     pasystray            # pulseaudio systray
     pciutils             # util commands for pci info
-    pinentry             # dialog programs for GnuPG
+    pinentry-gnome3      # dialog programs for GnuPG (must pick a variant since 26.05)
     playerctl            # music player controller
     postman              # API development environment
     prettyping           # a nicer ping
@@ -62,15 +62,14 @@ let
     simplescreenrecorder # self-explanatory
     slack                # messaging client
     spotify              # music source
-    stremio              # torrent streaming
     syncthing            # open Source Continuous File Synchronization
-    tdesktop             # telegram messaging client
+    telegram-desktop     # telegram messaging client (renamed from tdesktop)
     tldr                 # summary of a man page
     todoist-electron     # task manager
     tree                 # display files in a tree view
     vlc                  # media player
     xclip                # clipboard support (also for neovim)
-    whatsapp-for-linux   # messaging app
+    karere               # whatsapp client (whatsapp-for-linux archived upstream)
     yad                  # yet another dialog - fork of zenity
     zulip                # desktop client for zulip chat
   ];
@@ -88,8 +87,8 @@ let
     ghc
     leiningen
     nodejs
-    nodePackages.ts-node
-    nodePackages.typescript
+    tsx                  # TS runner (nodePackages.ts-node removed in 26.05)
+    typescript           # moved to top level (was nodePackages.typescript)
     ocaml
     openjdk
     python3
@@ -103,7 +102,8 @@ let
     zprint
   ];
 
-  gitPkgs = with pkgs.gitAndTools; [
+  # gitAndTools was removed in 26.05; these are all top level now
+  gitPkgs = with pkgs; [
     diff-so-fancy # git diff with colors
     git-crypt     # git files encryption
     hub           # github command-line client
@@ -123,7 +123,6 @@ let
     xorg.xkbcomp           # keymaps modifier
     xorg.xmodmap           # keymaps modifier
     xorg.xrandr            # display manager (X Resize and Rotate protocol)
-    acpilight              # screen brightness controler
   ];
 
 in

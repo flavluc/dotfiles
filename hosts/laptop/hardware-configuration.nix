@@ -8,24 +8,31 @@
     [ (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "sd_mod" ];
+  # Union of what nixos-generate-config detects now (usbhid) and what the
+  # known-good generation shipped (usb_storage, sd_mod). usbhid matters here
+  # because the root is LUKS: the passphrase prompt runs in the initrd, so a
+  # USB keyboard needs its driver present to work at that point.
+  boot.initrd.availableKernelModules = [ "xhci_pci" "thunderbolt" "nvme" "usbhid" "usb_storage" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/b2b21dab-23a5-4c8d-9d56-538acdda7c2b";
+    { device = "/dev/mapper/cryptroot";
       fsType = "ext4";
     };
 
+  boot.initrd.luks.devices."cryptroot".device = "/dev/disk/by-uuid/4d53ba19-039a-474d-a18a-607535770fae";
+
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/31A0-9801";
+    { device = "/dev/disk/by-uuid/54DB-ABEF";
       fsType = "vfat";
-      options = [ "fmask=0077" "dmask=0077" ];
+      options = [ "fmask=0022" "dmask=0022" ];
     };
 
   swapDevices = [ ];
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+  hardware.cpu.intel.npu.enable = true;
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }
