@@ -5,7 +5,7 @@
     enable = true;
     settings = {
         corner-radius = 10;
-        xinerama-shadow-crop = true;
+        crop-shadow-to-monitor = true;  # renamed from xinerama-shadow-crop
     };
 
     shadowExclude = [
