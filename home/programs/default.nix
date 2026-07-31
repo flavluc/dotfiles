@@ -2,6 +2,7 @@
   ./alacritty
   ./browsers/firefox.nix
   ./browsers/chromium.nix
+  ./claude-code
   ./emacs
   ./fish
   ./git
