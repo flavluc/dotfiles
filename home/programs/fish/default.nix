@@ -51,4 +51,20 @@ in
   };
 
   xdg.configFile."fish/functions/fish_prompt.fish".text = customPlugins.prompt;
+
+  # Cleanup for the fish 3.x -> 4.x upgrade (NixOS 26.05). fish 4 migrates the
+  # old universal fish_key_bindings variable by freezing it into a conf.d file;
+  # when the old value was empty this yields "There is no fish_key_bindings
+  # function called: ''" on every startup. Removing the frozen file and the
+  # stale universal variable prevents/undoes that. Safe to drop once both
+  # hosts have run it.
+  home.activation.fishKeyBindingsMigrationCleanup =
+    lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      run rm -f "$HOME/.config/fish/conf.d/fish_frozen_key_bindings.fish" \
+                "$HOME/.config/fish/conf.d/fish_frozen_key_bindings.fish.bak"
+      if [ -f "$HOME/.config/fish/fish_variables" ]; then
+        run ${pkgs.gnused}/bin/sed -i '/^SETUVAR fish_key_bindings:/d' \
+          "$HOME/.config/fish/fish_variables"
+      fi
+    '';
 }
