@@ -27,6 +27,23 @@
     package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
 
+  # Display policy: the DisplayPort ultrawide is the only active output;
+  # anything else (e.g. the HDMI TV) stays off. Matching by DP-* instead of a
+  # fixed name because output names differ between nouveau (DP-2) and the
+  # nvidia driver (DP-0, DP-2...).
+  services.xserver.displayManager.sessionCommands = ''
+    ${pkgs.xorg.xrandr}/bin/xrandr --query \
+      | ${pkgs.gawk}/bin/awk '/ connected/{print $1}' \
+      | while read -r out; do
+          case "$out" in
+            DP-*|DisplayPort-*)
+              ${pkgs.xorg.xrandr}/bin/xrandr --output "$out" --primary --auto ;;
+            *)
+              ${pkgs.xorg.xrandr}/bin/xrandr --output "$out" --off ;;
+          esac
+        done
+  '';
+
   # Desktop-specific: Hard drive filesystem
   fileSystems."/mnt/hdd" = {
     device = "/dev/disk/by-uuid/F262BEB362BE7C43";
