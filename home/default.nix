@@ -150,6 +150,22 @@ in
       DISPLAY = ":0";
       EDITOR = "emacs";
     };
+
+    # Syncthing ignore rules for ~/work (.stignore is never synced between
+    # devices, so it has to be provisioned on each machine). Also guarantees
+    # ~/work exists before Syncthing starts.
+    file."work/.stignore".text = ''
+      // per-machine build/dependency artifacts — regenerate locally instead
+      node_modules
+      .direnv
+      .venv
+      __pycache__
+      target
+      dist
+      .next
+      *.sock
+      .DS_Store
+    '';
   };
 
   imports = (import ./programs) ++ (import ./services) ++ [(import ./themes)];
@@ -236,6 +252,30 @@ in
 
     syncthing = {
       enable = true;
+      # Declarative-only: devices/folders not listed here are removed on activation
+      overrideDevices = true;
+      overrideFolders = true;
+      settings = {
+        devices = {
+          desktop.id = "3YYCUNJ-JVOXM4T-4DZKFAS-IINBBXO-R2UENPM-P6224WN-YREEFUE-3UF5SAQ";
+          laptop.id = "S3INAZG-6NWFXU5-BIZBQV2-CVRXXHW-DEXLCK6-H5P4GUP-HJNP7NQ-UADUCAM";
+        };
+        folders = {
+          work = {
+            path = "${config.home.homeDirectory}/work";
+            devices = [ "desktop" "laptop" ];
+            # Keep the last 5 versions of changed/deleted files as a safety net
+            versioning = {
+              type = "simple";
+              params.keep = "5";
+            };
+          };
+          claude-projects = {
+            path = "${config.home.homeDirectory}/.claude/projects";
+            devices = [ "desktop" "laptop" ];
+          };
+        };
+      };
     };
     
     udiskie = {
