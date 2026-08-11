@@ -84,6 +84,8 @@ let
     fsharp
     gcc
     ghc
+    kubectl              # kubernetes command-line tool
+    kubectx              # switch between clusters (kubectx) and namespaces (kubens)
     leiningen
     nodejs
     tsx                  # TS runner (nodePackages.ts-node removed in 26.05)

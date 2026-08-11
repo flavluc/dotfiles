@@ -33,6 +33,7 @@ in
     interactiveShellInit = ''
       eval (direnv hook fish)
       any-nix-shell fish --info-right | source
+      kubectl completion fish | source
     '';
     shellAliases = {
       cat  = "bat";
@@ -41,6 +42,7 @@ in
       dcd  = "docker-compose down --remove-orphans";
       drm  = "docker images -a -q | xargs docker rmi -f";
       du   = "ncdu --color dark -rr -x";
+      k    = "kubectl";
       ls   = "eza";
       ll   = "ls -a";
       ".." = "cd ..";
