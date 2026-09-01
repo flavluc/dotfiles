@@ -75,6 +75,7 @@ let
 
   devPkgs = with pkgs; [
     awscli2		           # unified tool to manage your AWS services
+    ssm-session-manager-plugin # required by `aws ssm start-session`
     babashka
     cargo
     clj-kondo

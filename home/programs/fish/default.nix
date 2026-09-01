@@ -50,6 +50,54 @@ in
       tree = "eza -T";
     };
     shellInit = fishConfig;
+
+    functions = {
+      # Port-forwards a private Tamborine service through the bastion host via
+      # SSM. The service name must also resolve to 127.0.0.1 (see
+      # networking.hosts in hosts/common.nix) so the TLS cert still validates.
+      tunnel = {
+        description = "SSM port-forward to a private tamborine service";
+        body = ''
+          set -l service $argv[1]
+          set -l port $argv[2]
+
+          switch "$service"
+            case grafana
+              test -n "$port"; or set port 8080
+            case minio
+              # 8081 so grafana and minio can be tunnelled at the same time
+              test -n "$port"; or set port 8081
+            case '*'
+              echo "usage: tunnel (grafana|minio) [local-port]" >&2
+              return 1
+          end
+
+          set -l host "$service.tamborine.app"
+
+          # AWS_PROFILE wins when the shell already has one exported
+          set -l profile
+          if not set -q AWS_PROFILE
+            set profile --profile sso-dev
+          end
+
+          set -l bastion (aws $profile ec2 describe-instances \
+            --filters "Name=tag:Name,Values=bastion-host" \
+                      "Name=instance-state-name,Values=running" \
+            --query "Reservations[*].Instances[*].InstanceId" --output text)
+
+          if test -z "$bastion"
+            echo "tunnel: no running bastion-host found, try: aws sso login --profile sso-dev" >&2
+            return 1
+          end
+
+          echo "tunnel: https://$host:$port via $bastion"
+
+          aws $profile ssm start-session --target $bastion \
+            --document-name AWS-StartPortForwardingSessionToRemoteHost \
+            --parameters "{\"host\":[\"$host\"],\"portNumber\":[\"443\"],\"localPortNumber\":[\"$port\"]}"
+        '';
+      };
+    };
   };
 
   xdg.configFile."fish/functions/fish_prompt.fish".text = customPlugins.prompt;

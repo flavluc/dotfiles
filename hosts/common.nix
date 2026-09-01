@@ -12,8 +12,15 @@
   # Networking
   networking.networkmanager.enable = true;
 
+  # Private services are reached through an SSM port-forward to the bastion
+  # host, so their real names have to resolve locally (the TLS cert is issued
+  # for the name, not for localhost). See the `tunnel` fish function.
   networking.hosts = {
-    "127.0.0.1" = [ "mongodb" ];
+    "127.0.0.1" = [
+      "mongodb"
+      "grafana.tamborine.app"
+      "minio.tamborine.app"
+    ];
   };
 
   # Set your time zone
