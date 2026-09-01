@@ -70,6 +70,7 @@ let
     vlc                  # media player
     xclip                # clipboard support (also for neovim)
     yad                  # yet another dialog - fork of zenity
+    yt-dlp               # download videos from youtube and other sites
     zulip                # desktop client for zulip chat
   ];
 
