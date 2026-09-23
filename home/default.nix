@@ -35,6 +35,7 @@ let
     gnupg                # free-software replacement for Symantec's PGP
     hyperfine            # command-line benchmarking tool
     insomnia             # API client for GraphQL, REST, WebSockets, SSE and gRPC
+    jq                   # command-line JSON processor
     krita                # a free and open source painting application
     libreoffice          # office suite
     libnotify            # notify-send command

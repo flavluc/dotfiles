@@ -20,6 +20,15 @@
       system = "x86_64-linux";
       config.allowUnfree = true;
     };
+
+    # nixpkgs-unstable costuma atrasar alguns dias em relação ao release do
+    # claude-code. O manifest.json vendorado aponta a mesma derivation do
+    # nixpkgs para o binário oficial mais novo. Para atualizar:
+    #   curl -sf https://downloads.claude.ai/claude-code-releases/<versão>/manifest.json \
+    #     > home/programs/claude-code/manifest.json
+    claude-code-latest = pkgs-unstable.claude-code.override {
+      manifest = nixpkgs.lib.importJSON ./home/programs/claude-code/manifest.json;
+    };
   in {
     nixosConfigurations = {
       desktop = nixpkgs.lib.nixosSystem {
@@ -30,7 +39,7 @@
             nixpkgs.overlays = [ 
               nur.overlays.default
               (final: prev: {
-                claude-code = pkgs-unstable.claude-code;
+                claude-code = claude-code-latest;
               })
             ]; 
           }
@@ -53,7 +62,7 @@
             nixpkgs.overlays = [ 
               nur.overlays.default
               (final: prev: {
-                claude-code = pkgs-unstable.claude-code;
+                claude-code = claude-code-latest;
               })
             ]; 
           }
