@@ -52,6 +52,55 @@ in
     shellInit = fishConfig;
 
     functions = {
+      # Keeps the laptop running with the lid closed (e.g. to leave Claude
+      # Code working while walking home). Holds a logind block inhibitor on
+      # lid switch, sleep and idle, so closing the lid and xautolock's idle
+      # `systemctl suspend` both become no-ops until `awake off`. The screen
+      # still locks. Opt-in on purpose: by default closing the lid suspends.
+      awake = {
+        description = "Keep the laptop awake with the lid closed (awake [on|off|status])";
+        body = ''
+          set -l pidfile "$XDG_RUNTIME_DIR/awake.pid"
+          set -l pid
+          test -f $pidfile; and set pid (cat $pidfile)
+          set -l running false
+          test -n "$pid"; and kill -0 $pid 2>/dev/null; and set running true
+
+          switch "$argv[1]"
+            case "" on
+              if test $running = true
+                echo "awake: already on (pid $pid)"
+                return 0
+              end
+              systemd-inhibit --what=handle-lid-switch:sleep:idle --mode=block \
+                --who=awake --why="Lid closed on purpose, keep running" \
+                sleep infinity &
+              set pid $last_pid
+              disown $pid
+              echo $pid > $pidfile
+              echo "awake: on, closing the lid won't suspend (awake off to undo)"
+            case off
+              if test $running = true
+                kill $pid
+                echo "awake: off"
+              else
+                echo "awake: was not on"
+              end
+              rm -f $pidfile
+            case status
+              if test $running = true
+                echo "awake: on (pid $pid)"
+              else
+                echo "awake: off"
+                return 1
+              end
+            case '*'
+              echo "usage: awake [on|off|status]" >&2
+              return 1
+          end
+        '';
+      };
+
       # Port-forwards a private Tamborine service through the bastion host via
       # SSM. The service name must also resolve to 127.0.0.1 (see
       # networking.hosts in hosts/common.nix) so the TLS cert still validates.
