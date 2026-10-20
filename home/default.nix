@@ -63,6 +63,7 @@ let
     simplescreenrecorder # self-explanatory
     slack                # messaging client
     spotify              # music source
+    stremio-linux-shell  # media center (old `stremio` pkg removed: qt5 webengine)
     syncthing            # open Source Continuous File Synchronization
     telegram-desktop     # telegram messaging client (renamed from tdesktop)
     tldr                 # summary of a man page
