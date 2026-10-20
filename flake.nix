@@ -40,6 +40,7 @@
               nur.overlays.default
               (final: prev: {
                 claude-code = claude-code-latest;
+                anki-bin = pkgs-unstable.anki-bin;
               })
             ]; 
           }
@@ -63,6 +64,7 @@
               nur.overlays.default
               (final: prev: {
                 claude-code = claude-code-latest;
+                anki-bin = pkgs-unstable.anki-bin;
               })
             ]; 
           }
