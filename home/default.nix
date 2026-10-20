@@ -96,6 +96,7 @@ let
     typescript           # moved to top level (was nodePackages.typescript)
     ocaml
     openjdk
+    openssl              # TLS toolkit and `openssl` CLI
     python3
     rlwrap
     rustc
